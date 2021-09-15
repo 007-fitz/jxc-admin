@@ -17,8 +17,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 @SpringBootConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -41,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private CaptchaCodeFilter01 captchaCodeFilter01;
+
+    @Resource
+    private DataSource dataSource;
 
     /**
      * 放行静态资源
@@ -82,6 +88,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/image").permitAll()
                 .anyRequest().authenticated();
 
+        http.rememberMe()
+                .rememberMeParameter("rememberMe")
+                //设置token的有效期，即多长时间内可以免除重复登录，单位是秒。
+                .tokenValiditySeconds(7 * 24 * 60 * 60)
+                .tokenRepository(persistentTokenRepository());
+
     }
 
 
@@ -90,6 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                System.out.println("loading User...");
                 User user = userService.findByUsername(username);
                 if (null == user) {
                     throw new UsernameNotFoundException("用户不存在");
@@ -104,6 +117,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * 配置从数据库中获取token * @return
+     */
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(){
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        return tokenRepository;
+    }
 /*
 //    告知框架，userDetailsService的实现类为...，和密码解析器为...。
 //    @Override

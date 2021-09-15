@@ -91,13 +91,13 @@ public class UserController {
     public String setting(@PathVariable("id") int id, Model model) {
         // 在未使用框架时，用户登录之后，用户信息user保存在session域当中，
         // 当前端想要访问用户信息时，要么去session中拿user，要么临时去数据库当中查user。
-        //      如果，去session域中拿，那么我们要保证在数据库数据修改之后，session域中的用户信息也能够修改
+        //      如果，去session域中拿，但是 我们要保证在数据库数据修改之后，session域中的用户信息也能够修改
         //      如果，临时去数据库中拿，是最新的数据，但是需要访问数据库
-        // 引入框架之后，大体流程相同，框架将authentication对象放在session中，其中封装了principal对象(user)
+        // 引入框架之后，大体流程相同，框架将authentication对象放在session中，其中封装了user
         // 但是，我们不能够直接操作这个对象，不方便修改和新建。
         // 所以这里我们使用第二种方式，临时去查。去principal中拿用户名，根据用户名去数据库中查。
         // 2.0  优化，principal在数据库过更新之后，没有更新，所以拿到的用户名也是旧的，
-        // 可以用类似 /main 的方式去获取id，也可以前端restful风格url中传入id。此处用第二种方式，restful
+        // 所以不是拿用户名，而是去拿id。可以去principal中拿id，类似 /main；也可通过前端保存的id放在url中，后端通过url去拿
         User user = userService.getById(id);
         model.addAttribute("user", user);
         return "/user/setting";

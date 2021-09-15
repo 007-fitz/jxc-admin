@@ -19,7 +19,7 @@ layui.use(['form','layuimini','jquery','jquery_cookie'], function () {
                 if(data.code==200){
                     layer.msg("密码修改成功,系统将在3秒后自动退出...", function () {
                         setTimeout(function () {
-                            window.parent.location.href=ctx+"/user/signout";
+                            window.parent.location.href=ctx+"/signout";
                         },0);
                     });
                 }else{

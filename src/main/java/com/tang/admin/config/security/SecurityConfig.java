@@ -1,10 +1,11 @@
 package com.tang.admin.config.security;
 
+import com.tang.admin.filters.CaptchaCodeFilter01;
+import com.tang.admin.filters.CaptchaCodeFilter02;
 import com.tang.admin.pojo.User;
 import com.tang.admin.service.IUserService;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 
@@ -34,6 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private IUserService userService;
 
+    @Resource
+    private CaptchaCodeFilter02 captchaCodeFilter02;
+
+    @Resource
+    private CaptchaCodeFilter01 captchaCodeFilter01;
+
     /**
      * 放行静态资源
      *
@@ -52,7 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf().disable()
+                .addFilterBefore(captchaCodeFilter01, UsernamePasswordAuthenticationFilter.class);
 
         http.headers().frameOptions().disable(); // 任何跨域
 //        http.headers().frameOptions().sameOrigin(); // 同源跨域
@@ -70,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/index").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/image").permitAll()
                 .anyRequest().authenticated();
 
     }
@@ -94,15 +104,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
 /*
 //    告知框架，userDetailsService的实现类为...，和密码解析器为...。
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(userDetailsService()).passwordEncoder(encoder());
 //    }
-
-//    手动生成asdf的密文，并加入数据库
+//
+////    手动生成asdf的密文，并加入数据库
 //    public static void main(String[] args) {
 //        BCryptPasswordEncoder pw = new BCryptPasswordEncoder();
 //        String psw = pw.encode("asdf");

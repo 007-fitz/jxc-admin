@@ -2,12 +2,11 @@ package com.tang.admin.controller;
 
 import com.tang.admin.pojo.User;
 import com.tang.admin.service.IUserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.yaml.snakeyaml.events.Event;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -18,6 +17,75 @@ public class MainController {
 
     @Resource
     private IUserService userService;
+
+    /**
+     * 主页面
+     * 我们在登录successHandler中手动的将用户信息存在了session中，
+     * 并保证在用户信息更新时，同步更新session中的数据，这样main页面能直接从session中读数据，而不用每次去数据库中查(去principal中拿uid，或者url中传uid)。
+     *      但是通过rememberMe的方式，不会走Handler的响应处理，所以session中没有数据。
+     *      而框架的rememberMe，当rememberMe成功时，能够将authentication(principal)对象恢复，
+     *      所以两种方式结合，当session中有数据时，去session中拿，当没有时，临时通过principal去查。
+     *
+     * 从principal中拿用户id，去数据库中查询用户最新信息，页面通过model去获取数据
+     * @return 主页面
+     */
+    @RequestMapping("/main")
+    public String main(Principal principal, HttpSession session) {
+        if (session.getAttribute("currentUser") != null) {
+            return "main";
+        }
+        this.recoverSessionUserInfoFromPrincipal(principal, session);
+        return "main";
+    }
+
+    /**
+     * 系统登录页面
+     * @return 视图
+     */
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
+    }
+
+    /**
+     * 系统欢迎页面
+     * @return 视图
+     */
+    @RequestMapping("/welcome")
+    public String welcome() {
+        return "welcome";
+    }
+
+
+
+
+    /**
+     * 获得principal，做测试用接口
+     * @param principal
+     * @return
+     */
+    @RequestMapping("/getPrincipal")
+    @ResponseBody
+    @PreAuthorize("hasAnyAuthority('ROLE_管理员')")
+    public Object principal(Principal principal) {
+        return principal;
+    }
+
+
+    private void recoverSessionUserInfoFromPrincipal(Principal principal, HttpSession session) {
+        // principal----org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+        // Principal接口 是 Authentication接口 的父接口，这里注入的是Authentication实现类实例对象。
+        // 其中Authentication接口的一个方法getPrincipal能返回UserDetails对象
+        // 通过UserDetails获取id。因为这个对象是自己的，通过实现接口的方式，而没有用框架自带的
+        System.out.println(principal);    // rememberMe成功后，框架自动恢复了principal对象
+        Authentication authentication = (Authentication) principal;
+        int uid = ((User)authentication.getPrincipal()).getId();
+        // 根据id查用户，结果放在model中，进行视图解析
+        User user = userService.getById(uid);
+        // 会走这条路说明session中没有数据了，手动保存起来
+        session.setAttribute("currentUser", user);
+    }
+
 
     /* 用户登录总结
         未使用框架时：
@@ -66,57 +134,5 @@ public class MainController {
 
      *
      */
-
-
-
-
-    /**
-     * 主页面
-     * 我们在登录successHandler中手动的将用户信息存在了session中，
-     * 并保证在用户信息更新时，同步更新session中的数据，这样main页面能直接从session中读数据，而不用每次去数据库中查(去principal中拿uid，或者url中传uid)。
-     *      但是通过rememberMe的方式，不会走Handler的响应处理，所以session中没有数据。
-     *      而框架的rememberMe，当rememberMe成功时，能够将authentication(principal)对象恢复，
-     *      所以两种方式结合，当session中有数据时，去session中拿，当没有时，临时通过principal去查。
-     *
-     * 从principal中拿用户id，去数据库中查询用户最新信息，页面通过model去获取数据
-     * @return 主页面
-     */
-    @RequestMapping("/main")
-    public String main(Principal principal, Model model, HttpSession session) {
-        if (session.getAttribute("currentUser") != null) {
-            return "main";
-        }
-        // principal----org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-        // Principal接口 是 Authentication接口 的父接口，这里注入的是Authentication实现类实例对象。
-        // 其中Authentication接口的一个方法getPrincipal能返回UserDetails对象
-        // 通过UserDetails获取id。因为这个对象是自己的，通过实现接口的方式，而没有用框架自带的
-        System.out.println(principal);    // rememberMe成功后，框架自动恢复了principal对象
-        Authentication authentication = (Authentication) principal;
-        int uid = ((User)authentication.getPrincipal()).getId();
-        // 根据id查用户，结果放在model中，进行视图解析
-        User user = userService.getById(uid);
-        // 会走这条路说明session中没有数据了，手动保存起来
-        session.setAttribute("currentUser", user);
-        return "main";
-    }
-
-    /**
-     * 系统登录页面
-     * @return 视图
-     */
-    @RequestMapping("/index")
-    public String index() {
-        return "index";
-    }
-
-    /**
-     * 系统欢迎页面
-     * @return 视图
-     */
-    @RequestMapping("/welcome")
-    public String welcome() {
-        return "welcome";
-    }
-
 
 }

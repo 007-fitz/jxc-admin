@@ -109,6 +109,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteRole(Integer id) {
         AssertUtil.isTrue(null == id || null == this.getById(id), "待删除角色不存在");
+        // 级联删除关系表中记录
+        int count = roleMenuService.count(new QueryWrapper<RoleMenu>().eq("role_id", id));
+        if (count > 0) {
+            AssertUtil.isTrue(!(roleMenuService.remove(new QueryWrapper<RoleMenu>().eq("role_id", id))), "角色授权失败");
+        }
+        // 以更新的方式将删除位标记为1
         Role role = new Role();
         role.setId(id);
         role.setIsDel(1);
@@ -130,6 +136,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void addGrant(Integer roleId, Integer[] mids) {
         AssertUtil.isTrue(null == roleId || null == this.getById(roleId), "角色不存在");
         int count = roleMenuService.count(new QueryWrapper<RoleMenu>().eq("role_id", roleId));

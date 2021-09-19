@@ -3,6 +3,8 @@ package com.tang.admin.mapper;
 import com.tang.admin.pojo.UserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户角色表 Mapper 接口
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2021-09-18
  */
 public interface UserRoleMapper extends BaseMapper<UserRole> {
+
+    List<String> findRolesByUserName(String username);
 
 }

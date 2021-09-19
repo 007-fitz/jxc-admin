@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tang.admin.dto.TreeDto;
 import com.tang.admin.pojo.Menu;
 import com.tang.admin.mapper.MenuMapper;
+import com.tang.admin.pojo.RoleMenu;
 import com.tang.admin.service.IMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tang.admin.service.IRoleMenuService;
@@ -140,6 +141,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @param id
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteMenuById(Integer id) {
         /**
          * 1.参数校验
@@ -153,10 +155,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         AssertUtil.isTrue(null==id || null==this.findMenuById(id), "待删除的记录不存在!");
         int count = this.count(new QueryWrapper<Menu>().eq("is_del", 0).eq("p_id", id));
         AssertUtil.isTrue(count>0, "存在子菜单，不允许直接删除!");
-//        count = roleMenuService.count(new QueryWrapper<RoleMenu>().eq("menu_id",id));
-//        if(count>0){
-//            AssertUtil.isTrue(!(roleMenuService.remove(new QueryWrapper<RoleMenu>().eq("menu_id",id))),"菜单删除失败!");
-//        }
+        count = roleMenuService.count(new QueryWrapper<RoleMenu>().eq("menu_id",id));
+        if(count>0){
+            AssertUtil.isTrue(!(roleMenuService.remove(new QueryWrapper<RoleMenu>().eq("menu_id",id))),"菜单删除失败!");
+        }
         Menu menu = new Menu();
         menu.setId(id);
         menu.setIsDel(1);

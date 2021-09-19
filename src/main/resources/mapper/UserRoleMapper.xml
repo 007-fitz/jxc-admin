@@ -4,14 +4,23 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.tang.admin.pojo.UserRole">
-        <id column="id" property="id" />
-        <result column="role_id" property="roleId" />
-        <result column="user_id" property="userId" />
+        <id column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="user_id" property="userId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, role_id, user_id
     </sql>
+
+    <select id="findRolesByUserName" resultType="java.lang.String">
+        select tr.name
+        from t_user_role tur
+                 left join t_user tu on tur.user_id = tu.id
+                 left join t_role tr on tur.role_id = tr.id
+        where tu.is_del = 0
+            and tu.user_name = #{username}
+    </select>
 
 </mapper>

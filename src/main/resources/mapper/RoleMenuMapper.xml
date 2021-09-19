@@ -20,4 +20,15 @@
         where role_id = #{roleId}
     </select>
 
+    <select id="findAuthoritiesByRoleName" resultType="java.lang.String">
+        select distinct tm.acl_value
+        from t_role_menu tru
+        left join t_role tr on tru.role_id = tr.id
+        left join t_menu tm on tru.menu_id = tm.id
+        where tr.name in
+        <foreach collection="roleNames" item="roleName" open="(" separator="," close=")">
+            #{roleName}
+        </foreach>
+    </select>
+
 </mapper>

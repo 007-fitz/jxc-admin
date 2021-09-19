@@ -23,4 +23,9 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
     public List<Integer> queryRoleHasAllMenus(Integer roleId) {
         return this.baseMapper.queryRoleHasAllMenus(roleId);
     }
+
+    @Override
+    public List<String> findAuthoritiesByRoleName(List<String> roleNames) {
+        return this.baseMapper.findAuthoritiesByRoleName(roleNames);
+    }
 }

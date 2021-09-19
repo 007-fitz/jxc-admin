@@ -1,16 +1,21 @@
 package com.tang.admin.config.security;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.tang.admin.config.ClassPathTldsLoader;
 import com.tang.admin.filters.CaptchaCodeFilter01;
 import com.tang.admin.filters.CaptchaCodeFilter02;
 import com.tang.admin.pojo.User;
+import com.tang.admin.service.IRbacService;
 import com.tang.admin.service.IUserService;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +27,8 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -47,6 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private DataSource dataSource;
+
+    @Resource
+    private IRbacService rbacService;
 
     /**
      * 放行静态资源
@@ -107,6 +117,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 if (null == user) {
                     throw new UsernameNotFoundException("用户不存在");
                 }
+                System.out.println("getting authorities...");
+                List<String> roleNames = rbacService.findRolesByUserName(username);
+                if(CollectionUtils.isNotEmpty(roleNames)){
+                    List<String> authorities = rbacService.findAuthoritiesByRoleName(roleNames);
+                    roleNames = roleNames.stream().map(role -> "ROLE_" + role).collect(Collectors.toList());
+                    authorities.addAll(roleNames);
+                    user.setAuthorities(AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", authorities)));
+                }
                 return user;
             }
         };
@@ -126,7 +144,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
     }
-/*
 //    告知框架，userDetailsService的实现类为...，和密码解析器为...。
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -140,6 +157,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        System.out.println(psw);
 //        System.out.println(pw.matches("asdf", "$2a$10$uomzRb1GdFM.4rgV/nGNW.nwCOJP9NYQJDL2TvGR2O8q.NvD4tQjW"));
 //    }
-*/
+
+    /**
+     * 加载 ClassPathTldsLoader
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(ClassPathTldsLoader.class)
+    public ClassPathTldsLoader classPathTldsLoader(){
+        return new ClassPathTldsLoader();
+    }
 
 }

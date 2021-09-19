@@ -17,4 +17,5 @@ public interface IRoleMenuService extends IService<RoleMenu> {
 
     List<Integer> queryRoleHasAllMenus(Integer roleId);
 
+    List<String> findAuthoritiesByRoleName(List<String> roleNames);
 }

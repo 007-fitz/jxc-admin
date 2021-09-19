@@ -54,7 +54,7 @@
             <button class="layui-btn layui-btn-lg" lay-submit=""
                     lay-filter="updateMenu">确认
             </button>
-            <a class="layui-btn layui-btn-lg layui-btn-normal">取消</a>
+            <a class="layui-btn layui-btn-lg layui-btn-normal" id="closeDlg">取消</a>
         </div>
     </div>
 </form>

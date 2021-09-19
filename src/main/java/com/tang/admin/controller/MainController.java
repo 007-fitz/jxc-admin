@@ -83,7 +83,7 @@ public class MainController {
      */
     @RequestMapping("/main")
     public String main(Principal principal, Model model, HttpSession session) {
-        if (session.getAttribute("user") != null) {
+        if (session.getAttribute("currentUser") != null) {
             return "main";
         }
         // principal----org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -96,7 +96,7 @@ public class MainController {
         // 根据id查用户，结果放在model中，进行视图解析
         User user = userService.getById(uid);
         // 会走这条路说明session中没有数据了，手动保存起来
-        session.setAttribute("user", user);
+        session.setAttribute("currentUser", user);
         return "main";
     }
 

@@ -26,7 +26,7 @@ public class JxcAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
         // 将用户部分信息暂存在session中，方便页面信息的展示和更新,也避免重复去访问数据库最新信息。
         User userDetails = (User) authentication.getPrincipal();
         userDetails.setPassword(null);
-        request.getSession().setAttribute("user", userDetails);
+        request.getSession().setAttribute("currentUser", userDetails);
         // 准备响应数据
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(

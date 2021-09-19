@@ -40,7 +40,7 @@ layui.use(['form', 'jquery', 'jquery_cookie'], function () {
                     // });
                     window.location.href = ctx + "/main";
                 } else {
-                    $("#refreshCaptcha").attr("src", "/image?" + Math.floor(Math.random() * 100));
+                    // $("#refreshCaptcha").attr("src", "/image?" + Math.floor(Math.random() * 100));
                     layer.msg(data.message);
                 }
             }

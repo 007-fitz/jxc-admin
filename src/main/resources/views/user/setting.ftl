@@ -15,25 +15,25 @@
             <div class="layui-form-item">
                 <label class="layui-form-label required">管理账号</label>
                 <div class="layui-input-block">
-                    <input type="text" name="userName" lay-verify="required"  class="layui-input" value="${(user.username)!'xxx'}">
+                    <input type="text" name="userName" lay-verify="required"  class="layui-input" value="${(currentUser.username)!'xxx'}">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label ">备注名</label>
                 <div class="layui-input-block">
                     <input type="text" name="bz"  placeholder="请输入备注名"
-                           value="${(user.bz)!}" class="layui-input">
+                           value="${(currentUser.bz)!}" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">真实姓名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="trueName"  placeholder="请输入真实姓名"  value="${(user.trueName)!}" class="layui-input">
+                    <input type="text" name="trueName"  placeholder="请输入真实姓名"  value="${(currentUser.trueName)!}" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <input type="hidden" name="id"   value="${(user.id)!}" >
+                    <input type="hidden" name="id"   value="${(currentUser.id)!}" >
                     <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
                 </div>
             </div>

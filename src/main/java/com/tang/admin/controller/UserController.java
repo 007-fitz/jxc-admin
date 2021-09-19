@@ -119,6 +119,7 @@ public class UserController {
      */
     @RequestMapping("/list")
     @ResponseBody
+//    @PreAuthorize("hasAnyAuthority('101003')")
     public Map<String, Object> list(UserQuery userQuery) {
         return userService.userList(userQuery);
     }

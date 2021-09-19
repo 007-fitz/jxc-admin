@@ -4,20 +4,26 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.tang.admin.pojo.Menu">
-        <id column="id" property="id" />
-        <result column="icon" property="icon" />
-        <result column="name" property="name" />
-        <result column="state" property="state" />
-        <result column="url" property="url" />
-        <result column="p_id" property="pId" />
-        <result column="acl_value" property="aclValue" />
-        <result column="grade" property="grade" />
-        <result column="is_del" property="isDel" />
+        <id column="id" property="id"/>
+        <result column="icon" property="icon"/>
+        <result column="name" property="name"/>
+        <result column="state" property="state"/>
+        <result column="url" property="url"/>
+        <result column="p_id" property="pId"/>
+        <result column="acl_value" property="aclValue"/>
+        <result column="grade" property="grade"/>
+        <result column="is_del" property="isDel"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, icon, name, state, url, p_id, acl_value, grade, is_del
     </sql>
+
+    <select id="queryAllMenus" resultType="com.tang.admin.dto.TreeDto">
+        select id, p_id pId, name
+        from t_menu
+        where is_del = 0
+    </select>
 
 </mapper>

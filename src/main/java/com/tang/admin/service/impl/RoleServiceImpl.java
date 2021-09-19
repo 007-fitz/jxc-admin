@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tang.admin.pojo.Role;
 import com.tang.admin.mapper.RoleMapper;
+import com.tang.admin.pojo.RoleMenu;
 import com.tang.admin.query.RoleQuery;
+import com.tang.admin.service.IRoleMenuService;
 import com.tang.admin.service.IRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tang.admin.utils.AssertUtil;
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,8 +33,12 @@ import java.util.Map;
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
+    @Resource
+    private IRoleMenuService roleMenuService;
+
     /**
      * 根据条件列出角色
+     *
      * @param roleQuery
      * @return
      */
@@ -47,6 +56,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     /**
      * 根据角色名查找角色
+     *
      * @param roleName
      * @return
      */
@@ -56,6 +66,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     /**
      * 保存角色
+     *
      * @param role
      */
     @Override
@@ -73,6 +84,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     /**
      * 更新角色信息
+     *
      * @param role
      */
     @Override
@@ -90,6 +102,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     /**
      * 根据id删除角色
+     *
      * @param id
      */
     @Override
@@ -100,5 +113,38 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         role.setId(id);
         role.setIsDel(1);
         AssertUtil.isTrue(!this.updateById(role), "角色记录删除失败");
+    }
+
+    /**
+     * 查询所有角色接口
+     * 在指定uid的基础上，标出该用户所拥有的角色。
+     * (通过sql语句实现，先查出该用户所拥有角色，作为临时表，然后临时表与自身完整表自左联，对于null的标记未selected，供前端处理)
+     * (也可以分两步，分两个集合（每个记录为Map），先查出所有角色 集合1，然后查出该用户对应角色 集合2，对于共有的角色，在集合1中标记上selected（map当中加key-value）)
+     *
+     * @param userId 用户id
+     * @return (( roleName ， id ， selected)->Map ) ->List
+     */
+    @Override
+    public List<Map<String, Object>> queryAllRoles(Integer userId) {
+        return this.baseMapper.queryAllRoles(userId);
+    }
+
+    @Override
+    public void addGrant(Integer roleId, Integer[] mids) {
+        AssertUtil.isTrue(null == roleId || null == this.getById(roleId), "角色不存在");
+        int count = roleMenuService.count(new QueryWrapper<RoleMenu>().eq("role_id", roleId));
+        if (count > 0) {
+            AssertUtil.isTrue(!(roleMenuService.remove(new QueryWrapper<RoleMenu>().eq("role_id", roleId))), "角色授权失败");
+        }
+        if (null != mids && mids.length > 0) {
+            List<RoleMenu> roleMenus = new ArrayList<RoleMenu>();
+            for (Integer mid : mids) {
+                RoleMenu roleMenu = new RoleMenu();
+                roleMenu.setRoleId(roleId);
+                roleMenu.setMenuId(mid);
+                roleMenus.add(roleMenu);
+            }
+            AssertUtil.isTrue(!(roleMenuService.saveBatch(roleMenus)), "角色授权失败");
+        }
     }
 }

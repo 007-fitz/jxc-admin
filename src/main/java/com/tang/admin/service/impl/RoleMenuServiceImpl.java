@@ -6,6 +6,8 @@ import com.tang.admin.service.IRoleMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 角色菜单表 服务实现类
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> implements IRoleMenuService {
 
+    @Override
+    public List<Integer> queryRoleHasAllMenus(Integer roleId) {
+        return this.baseMapper.queryRoleHasAllMenus(roleId);
+    }
 }

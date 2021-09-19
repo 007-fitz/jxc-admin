@@ -1,6 +1,8 @@
 package com.tang.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.tang.admin.dto.TreeDto;
 import com.tang.admin.pojo.Menu;
 import com.tang.admin.mapper.MenuMapper;
 import com.tang.admin.service.IMenuService;
@@ -163,26 +165,21 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
 
 
-
-
     @Resource
     private IRoleMenuService roleMenuService;
-//    @Override
-//    public List<TreeDto> queryAllMenus(Integer roleId) {
-////        List<TreeDto> treeDtos = this.baseMapper.queryAllMenus();
-////        List<Integer> roleHasMenuIds = roleMenuService.queryRoleHasAllMenus(roleId);
-////        if (!CollectionUtils.isEmpty(roleHasMenuIds)){
-////            treeDtos.forEach(treeDto -> {
-////                if(roleHasMenuIds.contains(treeDto.getId())){
-////                    treeDto.setChecked(true);
-////                }
-////            });
-////        }
-////        return treeDtos;
 
-//    }
-
-
-
+    @Override
+    public List<TreeDto> queryAllMenus(Integer roleId) {
+        List<TreeDto> treeDtos = this.baseMapper.queryAllMenus();
+        List<Integer> roleHasMenuIds = roleMenuService.queryRoleHasAllMenus(roleId);
+        if (!CollectionUtils.isEmpty(roleHasMenuIds)){
+            treeDtos.forEach(treeDto -> {
+                if(roleHasMenuIds.contains(treeDto.getId())){
+                    treeDto.setChecked(true);
+                }
+            });
+        }
+        return treeDtos;
+    }
 
 }

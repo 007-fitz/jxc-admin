@@ -1,6 +1,7 @@
 package com.tang.admin.controller;
 
 
+import com.tang.admin.dto.TreeDto;
 import com.tang.admin.model.RespBean;
 import com.tang.admin.pojo.Menu;
 import com.tang.admin.service.IMenuService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -113,6 +115,17 @@ public class MenuController {
     public RespBean delete(Integer id) {
         menuService.deleteMenuById(id);
         return RespBean.success("菜单记录删除成功");
+    }
+
+    /**
+     * 菜单展示，当指定角色已存在菜单关系时，进行回显标记
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("/queryAllMenus")
+    @ResponseBody
+    public List<TreeDto> queryAllMenus(Integer roleId) {
+        return menuService.queryAllMenus(roleId);
     }
 
 

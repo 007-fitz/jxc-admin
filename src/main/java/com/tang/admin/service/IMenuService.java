@@ -34,4 +34,6 @@ public interface IMenuService extends IService<Menu> {
     void updateMenu(Menu menu);
 
     void deleteMenuById(Integer id);
+
+    List<TreeDto> queryAllMenus(Integer roleId);
 }

@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tang.admin.pojo.User;
 import com.tang.admin.mapper.UserMapper;
+import com.tang.admin.pojo.UserRole;
 import com.tang.admin.query.UserQuery;
+import com.tang.admin.service.IUserRoleService;
 import com.tang.admin.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tang.admin.utils.AssertUtil;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +38,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Resource
     private PasswordEncoder passwordEncoder;
+
+    @Resource
+    private IUserRoleService userRoleService;
 
     /**
      * 当前用户信息修改
@@ -133,8 +139,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setPassword(passwordEncoder.encode("asdf"));
         user.setIsDel(0);
         AssertUtil.isTrue(!this.save(user), "用户保存失败");
-        // TODO 用户_角色 关系添加
-
+        relationUserRole(this.findByUsername(user.getUsername()).getId(), user.getRoleIds());
     }
 
     @Override
@@ -148,8 +153,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User temp = this.findByUsername(user.getUsername());
         AssertUtil.isTrue(null != temp && !temp.getId().equals(user.getId()), "用户名已存在");
         AssertUtil.isTrue(!this.updateById(user), "用户更新失败");
-        // TODO 用户_角色 关系更新
-
+        relationUserRole(user.getId(), user.getRoleIds());
     }
 
     @Override
@@ -160,8 +164,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         当存在用户角色关系时，用户不能删除。手动外键逻辑
          */
         AssertUtil.isTrue(null == ids || ids.length == 0, "请选择待删除的记录id!");
-        // TODO 当存在用户角色关系时，用户不能删除
-
+        int count = userRoleService.count(new QueryWrapper<UserRole>().in("user_id", Arrays.asList(ids)));
+        AssertUtil.isTrue(count>0, "某些用户存在角色关系，不能删除");
         ArrayList<User> users = new ArrayList<>();
         for (Integer id : ids) {
             User user = new User();
@@ -171,4 +175,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         AssertUtil.isTrue(!this.updateBatchById(users), "用户删除失败");
     }
+
+    /**
+     * 维护用户与角色之间的关系。
+     * 如果存在旧记录，直接删除，以新的为准
+     *
+     * @param uid  用户id
+     * @param rids 角色id，字符串形式，以 , 分隔
+     */
+    public void relationUserRole(Integer uid, String rids) {
+        int count = userRoleService.count(new QueryWrapper<UserRole>().eq("user_id", uid));
+        if (count > 0) {
+            AssertUtil.isTrue(!(userRoleService.remove(new QueryWrapper<UserRole>().eq("user_id", uid))), "用户角色分配异常01");
+        }
+        if (StringUtils.isNotBlank(rids)) {
+            ArrayList<UserRole> userRoles = new ArrayList<>();
+            for (String rid : rids.split(",")) {
+                UserRole userRole = new UserRole();
+                userRole.setUserId(uid);
+                userRole.setRoleId(Integer.parseInt(rid));
+                userRoles.add(userRole);
+            }
+            AssertUtil.isTrue(!userRoleService.saveBatch(userRoles), "用户角色分配异常02");
+        }
+    }
+
+
 }

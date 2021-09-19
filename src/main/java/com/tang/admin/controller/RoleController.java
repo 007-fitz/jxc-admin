@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -109,8 +110,27 @@ public class RoleController {
      * @return
      */
     @RequestMapping("/toAddGrantPage")
-    public String toAddGrantPage() {
+    public String toAddGrantPage(Integer roleId, Model model) {
+        model.addAttribute("roleId", roleId);
         return "role/grant";
+    }
+
+    /**
+     * 角色展示，对于特定的用户，当已存在用户角色关系时，经进行回显标记
+     * @param userId
+     * @return
+     */
+    @RequestMapping("queryAllRoles")
+    @ResponseBody
+    public List<Map<String,Object>> queryAllRoles(Integer userId){
+        return roleService.queryAllRoles(userId);
+    }
+
+    @RequestMapping("/addGrant")
+    @ResponseBody
+    public RespBean addGrant(Integer roleId, Integer[] mids) {
+        roleService.addGrant(roleId, mids);
+        return RespBean.success("角色-权限关系建立成功");
     }
 
 }

@@ -4,14 +4,20 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.tang.admin.pojo.RoleMenu">
-        <id column="id" property="id" />
-        <result column="menu_id" property="menuId" />
-        <result column="role_id" property="roleId" />
+        <id column="id" property="id"/>
+        <result column="menu_id" property="menuId"/>
+        <result column="role_id" property="roleId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, menu_id, role_id
     </sql>
+
+    <select id="queryRoleHasAllMenus" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select menu_id
+        from t_role_menu
+        where role_id = #{roleId}
+    </select>
 
 </mapper>

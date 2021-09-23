@@ -26,4 +26,8 @@ public interface IGoodsService extends IService<Goods> {
 
     void deleteGoods(Integer id);
 
+    void updateStock(Goods goods);
+
+    void deleteStock(Integer id);
+
 }

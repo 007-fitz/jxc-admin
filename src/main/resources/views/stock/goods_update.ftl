@@ -13,14 +13,14 @@
             <label class="layui-form-label">商品名</label>
             <div class="layui-input-block">
                 <input type="text" name="name" class="layui-input name"
-                       readonly="readonly" id="name" value="${(goods.name)!""}">
+                       readonly="readonly" id="name" value="${(goods.name)!""}" disabled="disabled">
             </div>
         </div>
         <div class="layui-col-xs6">
             <label class="layui-form-label">商品编号</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input code"
-                       readonly="readonly" name="code" id="code" value="${(goods.code)!}">
+                       readonly="readonly" name="code" id="code" value="${(goods.code)!}" disabled="disabled">
             </div>
         </div>
     </div>
@@ -30,14 +30,14 @@
             <label class="layui-form-label">商品型号</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input sellingPrice"
-                       readonly="readonly" name="model" id="model" value="${(goods.model)!""}">
+                       readonly="readonly" name="model" id="model" value="${(goods.model)!""}" disabled="disabled">
             </div>
         </div>
         <div class="layui-col-xs6">
             <label class="layui-form-label">成本价</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input purchasingPrice"
-                       name="purchasingPrice000" id="purchasingPrice" readonly="readonly" value="${(goods.purchasingPrice)!}">
+                       name="purchasingPrice000" id="purchasingPrice" readonly="readonly" value="${(goods.purchasingPrice)!}" disabled="disabled">
             </div>
         </div>
     </div>

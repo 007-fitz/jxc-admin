@@ -17,7 +17,7 @@ layui.use(['table', 'treetable'], function () {
         cols: [[
             {type: 'numbers'},
             {field: 'name', minWidth: 100, title: '类别名称'},
-            {field: 'icon', width: 100,title: '图标'},
+            {field: 'icon', width: 100,title: '描述'},
             {
                 field: 'state', width: 80, align: 'center', templet: function (d) {
                     if (d.state ==1 ) {

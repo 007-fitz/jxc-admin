@@ -43,7 +43,6 @@ layui.use(['form', 'layer'], function () {
                     }else{
                         $("#unit").append("<option value='"+item.id+"' >"+item.name+"</option>");
                     }
-
                 });
             }
             //重新渲染

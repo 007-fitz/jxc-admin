@@ -144,6 +144,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
     }
+
+    /**
+     * 加载 ClassPathTldsLoader
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(ClassPathTldsLoader.class)
+    public ClassPathTldsLoader classPathTldsLoader(){
+        return new ClassPathTldsLoader();
+    }
+
 //    告知框架，userDetailsService的实现类为...，和密码解析器为...。
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -158,14 +169,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        System.out.println(pw.matches("asdf", "$2a$10$uomzRb1GdFM.4rgV/nGNW.nwCOJP9NYQJDL2TvGR2O8q.NvD4tQjW"));
 //    }
 
-    /**
-     * 加载 ClassPathTldsLoader
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean(ClassPathTldsLoader.class)
-    public ClassPathTldsLoader classPathTldsLoader(){
-        return new ClassPathTldsLoader();
-    }
+
 
 }

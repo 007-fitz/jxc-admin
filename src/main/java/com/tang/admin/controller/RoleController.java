@@ -116,7 +116,20 @@ public class RoleController {
     }
 
     /**
-     * 角色展示，对于特定的用户，当已存在用户角色关系时，经进行回显标记
+     * 用户-权限 关系建立
+     * @param roleId
+     * @param mids
+     * @return
+     */
+    @RequestMapping("/addGrant")
+    @ResponseBody
+    public RespBean addGrant(Integer roleId, Integer[] mids) {
+        roleService.addGrant(roleId, mids);
+        return RespBean.success("角色-权限关系建立成功");
+    }
+
+    /**
+     * 角色简约展示，对于特定的用户，当已存在用户角色关系时，经进行回显标记
      * @param userId
      * @return
      */
@@ -124,13 +137,6 @@ public class RoleController {
     @ResponseBody
     public List<Map<String,Object>> queryAllRoles(Integer userId){
         return roleService.queryAllRoles(userId);
-    }
-
-    @RequestMapping("/addGrant")
-    @ResponseBody
-    public RespBean addGrant(Integer roleId, Integer[] mids) {
-        roleService.addGrant(roleId, mids);
-        return RespBean.success("角色-权限关系建立成功");
     }
 
 }

@@ -89,9 +89,6 @@
         </form>
     </div>
 </div>
-<div class="footer">
-    xiaokaixin<span class="padding-5">|</span>QQ:1040580896,加我获取账户及密码
-</div>
 
 <script src="${ctx.contextPath}/js/index.js" charset="utf-8"></script>
 </body>

@@ -15,11 +15,8 @@ layui.use(['form', 'layer'], function () {
                     parent.location.reload();
                 }, 500);
             } else {
-                layer.message(
-                    res.message, {
-                        icon: 5
-                    }
-                );
+                top.layer.close(index);
+                top.layer.msg(res.message);
             }
         });
         return false;

@@ -23,6 +23,14 @@ public class CaptchaCodeFilter01 extends OncePerRequestFilter {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * 过滤逻辑
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 只对登录请求进行验证码确认和过滤
@@ -40,6 +48,10 @@ public class CaptchaCodeFilter01 extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * 对用户填写的验证码进行验证
+     * @param request
+     */
     private void validate(HttpServletRequest request) {
         HttpSession session = request.getSession();
 

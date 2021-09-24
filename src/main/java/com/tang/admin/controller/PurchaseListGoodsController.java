@@ -26,6 +26,11 @@ public class PurchaseListGoodsController {
     @Resource
     private IPurchaseListGoodsService purchaseListGoodsService;
 
+    /**
+     * 订单所包含的商品的展示
+     * @param purchaseListGoodsQuery
+     * @return
+     */
     @RequestMapping("/list")
     @ResponseBody
     public Map<String, Object> listPurchaseListGoods(PurchaseListGoodsQuery purchaseListGoodsQuery) {

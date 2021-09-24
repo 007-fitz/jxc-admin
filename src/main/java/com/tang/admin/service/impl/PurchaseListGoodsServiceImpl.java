@@ -24,6 +24,11 @@ import java.util.Map;
 @Service
 public class PurchaseListGoodsServiceImpl extends ServiceImpl<PurchaseListGoodsMapper, PurchaseListGoods> implements IPurchaseListGoodsService {
 
+    /**
+     * 展示进货订单中所包含的商品信息
+     * @param plgQuery
+     * @return
+     */
     @Override
     public Map<String, Object> listPurchaseListGoods(PurchaseListGoodsQuery plgQuery) {
         IPage<PurchaseListGoods> page = new Page<>(plgQuery.getPage(), plgQuery.getLimit());

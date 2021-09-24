@@ -29,7 +29,7 @@ public class StockController {
     }
 
     /**
-     * 库存量为0 的商品记录
+     * 库存量为0 的商品记录，即未入库商品
      * @param goodsQuery
      * @return
      */
@@ -41,7 +41,7 @@ public class StockController {
     }
 
     /**
-     * 库存量大于0 的商品记录
+     * 库存量大于0 的商品记录，即已入库商品
      * @param goodsQuery
      * @return
      */
@@ -52,6 +52,12 @@ public class StockController {
         return goodsService.goodsList(goodsQuery);
     }
 
+    /**
+     * 给指定商品更新库存信息 页面
+     * @param gid
+     * @param model
+     * @return
+     */
     @RequestMapping("/toUpdateGoodsInfoPage")
     public String toUpdateGoodsInfoPage(Integer gid, Model model) {
         if (gid != null) {
@@ -60,6 +66,11 @@ public class StockController {
         return "/stock/goods_update";
     }
 
+    /**
+     * 给指定商品更新库存信息
+     * @param goods
+     * @return
+     */
     @RequestMapping("/updateStock")
     @ResponseBody
     public RespBean updateStock(Goods goods) {
@@ -67,6 +78,11 @@ public class StockController {
         return RespBean.success("商品库存设置成功");
     }
 
+    /**
+     * 将指定商品库存归0
+     * @param id
+     * @return
+     */
     @RequestMapping("/deleteStock")
     @ResponseBody
     public RespBean deleteStock(Integer id){

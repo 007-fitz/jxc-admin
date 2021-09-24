@@ -21,11 +21,21 @@ public class CommonController {
     @Resource
     private IGoodsService goodsService;
 
+    /**
+     * 创建订单时，展示所有商品以供选择 的页面
+     * @return
+     */
     @RequestMapping("/toSelectGoodsPage")
     public String toSelectGoodsPage() {
         return "/common/goods";
     }
 
+    /**
+     * 选中指定商品进行添加入库页面
+     * @param gid
+     * @param model
+     * @return
+     */
     @RequestMapping("/toAddGoodsInfoPage")
     public String toAddGoodsInfoPage(Integer gid, Model model) {
         if (gid != null) {
@@ -34,6 +44,14 @@ public class CommonController {
         return "/common/goods_add_update";
     }
 
+    /**
+     * 对指定商品入库信息进行更新页面
+     * @param id
+     * @param price
+     * @param num
+     * @param model
+     * @return
+     */
     @RequestMapping("/toUpdateGoodsInfoPage")
     public String toUpdateGoodsInfoPage(Integer id, String price, Integer num, Model model) {
         if (id != null) {

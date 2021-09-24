@@ -30,6 +30,11 @@ import java.util.Map;
 @Service
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> implements ICustomerService {
 
+    /**
+     * 条件选择性展示客户信息
+     * @param customerQuery
+     * @return
+     */
     @Override
     public Map<String, Object> customerList(CustomerQuery customerQuery) {
         IPage<Customer> page = new Page<Customer>(customerQuery.getPage(), customerQuery.getLimit());
@@ -42,6 +47,10 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         return PageResultUtil.getResult(page.getTotal(), page.getRecords());
     }
 
+    /**
+     * 新增客户
+     * @param customer
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveCustomer(Customer customer) {
@@ -56,17 +65,32 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         AssertUtil.isTrue(!(this.save(customer)), "记录添加失败!");
     }
 
+    /**
+     * 对客户信息进行非空校验
+     * @param name
+     * @param contact
+     * @param number
+     */
     private void checkParams(String name, String contact, String number) {
         AssertUtil.isTrue(StringUtils.isBlank(name), "请输入供应商名称!");
         AssertUtil.isTrue(StringUtils.isBlank(contact), "请输入联系人!");
         AssertUtil.isTrue(StringUtils.isBlank(number), "请输入联系电话!");
     }
 
+    /**
+     * 根据客户名查找客户
+     * @param name
+     * @return
+     */
     @Override
     public Customer findCustomerByName(String name) {
         return this.getOne(new QueryWrapper<Customer>().eq("is_del", 0).eq("name", name));
     }
 
+    /**
+     * 更新客户信息
+     * @param customer
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateCustomer(Customer customer) {
@@ -77,6 +101,10 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         AssertUtil.isTrue(!(this.updateById(customer)), "记录更新失败!");
     }
 
+    /**
+     * 删除客户
+     * @param ids
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public void deleteCustomer(Integer[] ids) {

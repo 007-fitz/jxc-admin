@@ -56,7 +56,24 @@ public class MainController {
         return "welcome";
     }
 
-
+    /**
+     * 根据当前用户的id，查找并获得user对象，放在Session域中
+     * @param principal
+     * @param session
+     */
+    private void recoverSessionUserInfoFromPrincipal(Principal principal, HttpSession session) {
+        // principal----org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+        // Principal接口 是 Authentication接口 的父接口，这里注入的是Authentication实现类实例对象。
+        // 其中Authentication接口的一个方法getPrincipal能返回UserDetails对象
+        // 通过UserDetails获取id。因为这个对象是自己的，通过实现接口的方式，而没有用框架自带的
+        System.out.println(principal);    // rememberMe成功后，框架自动恢复了principal对象
+        Authentication authentication = (Authentication) principal;
+        int uid = ((User)authentication.getPrincipal()).getId();
+        // 根据id查用户，结果放在model中，进行视图解析
+        User user = userService.getById(uid);
+        // 会走这条路说明session中没有数据了，手动保存起来
+        session.setAttribute("currentUser", user);
+    }
 
 
     /**
@@ -71,20 +88,6 @@ public class MainController {
         return principal;
     }
 
-
-    private void recoverSessionUserInfoFromPrincipal(Principal principal, HttpSession session) {
-        // principal----org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-        // Principal接口 是 Authentication接口 的父接口，这里注入的是Authentication实现类实例对象。
-        // 其中Authentication接口的一个方法getPrincipal能返回UserDetails对象
-        // 通过UserDetails获取id。因为这个对象是自己的，通过实现接口的方式，而没有用框架自带的
-        System.out.println(principal);    // rememberMe成功后，框架自动恢复了principal对象
-        Authentication authentication = (Authentication) principal;
-        int uid = ((User)authentication.getPrincipal()).getId();
-        // 根据id查用户，结果放在model中，进行视图解析
-        User user = userService.getById(uid);
-        // 会走这条路说明session中没有数据了，手动保存起来
-        session.setAttribute("currentUser", user);
-    }
 
 
     /* 用户登录总结

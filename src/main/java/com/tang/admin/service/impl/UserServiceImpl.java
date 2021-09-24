@@ -127,6 +127,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return PageResultUtil.getResult(page.getTotal(), page.getRecords());
     }
 
+    /**
+     * 新增用户
+     * @param user
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveUser(User user) {
@@ -142,6 +146,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         relationUserRole(this.findByUsername(user.getUsername()).getId(), user.getRoleIds());
     }
 
+    /**
+     * 更新用户
+     * @param user
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateUser(User user) {
@@ -156,6 +164,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         relationUserRole(user.getId(), user.getRoleIds());
     }
 
+    /**
+     * 删除用户
+     * @param ids
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteUsers(Integer[] ids) {

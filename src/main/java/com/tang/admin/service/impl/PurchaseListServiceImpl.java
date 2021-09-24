@@ -46,6 +46,10 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
     @Resource
     private IUserService userService;
 
+    /**
+     * 生成进货订单编号
+     * @return
+     */
     @Override
     public String getNextPurchaseNumber() {
         //JH20218070001X
@@ -66,6 +70,12 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
         }
     }
 
+    /**
+     * 保存进货订单信息
+     * @param username 当前用户用户名
+     * @param purchaseList 订单信息
+     * @param plgList 订单所包含的商品信息
+     */
     @Override
     public void savePurchaseList(String username, PurchaseList purchaseList, List<PurchaseListGoods> plgList) {
         AssertUtil.isTrue(null == purchaseList.getSupplierId(), "请指定供应商");
@@ -87,6 +97,11 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
         AssertUtil.isTrue(!purchaseListGoodsService.saveBatch(plgList), "订单入库失败02");
     }
 
+    /**
+     * 条件性展示进货订单信息
+     * @param purchaseListQuery
+     * @return 分页查询结果
+     */
     @Override
     public Map<String, Object> listPurchaseList(PurchaseListQuery purchaseListQuery) {
         IPage<PurchaseList> page = new Page<PurchaseList>(purchaseListQuery.getPage(), purchaseListQuery.getLimit());

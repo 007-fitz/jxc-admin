@@ -14,6 +14,7 @@ public class PurchaseListQuery extends BaseQuery {
 
     private String startDate;
     private String endDate;
+
     private String goodsName;
     private Integer typeId;
     private List<Integer> typeIds;

@@ -106,7 +106,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-
+    /**
+     * 自定义登录逻辑
+     * @return
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -136,7 +139,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 配置从数据库中获取token * @return
+     * 配置从数据库中获取token
+     * @return
      */
     @Bean
     public PersistentTokenRepository persistentTokenRepository(){

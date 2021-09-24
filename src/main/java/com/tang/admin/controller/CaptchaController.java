@@ -20,7 +20,12 @@ public class CaptchaController {
     @Resource
     private DefaultKaptcha defaultKaptcha;
 
-
+    /**
+     * 生成并返回验证码图片
+     * @param response
+     * @param session
+     * @throws IOException
+     */
     @RequestMapping(value = "/image", method = RequestMethod.GET)
     public void kaptcha(HttpServletResponse response, HttpSession session) throws IOException {
         response.setDateHeader("Expires", 0);

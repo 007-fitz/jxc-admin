@@ -32,7 +32,6 @@ public class MenuController {
 
     /**
      * 菜单展示 页面
-     *
      * @return
      */
     @RequestMapping("/index")
@@ -53,7 +52,6 @@ public class MenuController {
 
     /**
      * 新增菜单记录 页面
-     *
      * @param grade 中转
      * @param pId   中转
      * @param model 前面两个参数放在model中，以提供 freemarker 进行变量判断，从而选择性展示或选中
@@ -68,7 +66,6 @@ public class MenuController {
 
     /**
      * 新增菜单
-     *
      * @param menu
      * @return
      */
@@ -81,7 +78,6 @@ public class MenuController {
 
     /**
      * 更新菜单信息 页面
-     *
      * @param id    菜单id 用于查找菜单信息
      * @param model 放置菜单信息
      * @return
@@ -94,7 +90,6 @@ public class MenuController {
 
     /**
      * 更新菜单
-     *
      * @param menu
      * @return
      */

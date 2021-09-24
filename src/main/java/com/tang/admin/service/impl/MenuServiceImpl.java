@@ -170,6 +170,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Resource
     private IRoleMenuService roleMenuService;
 
+    /**
+     * 层级展示所有权限，同时如果id非空，进行回显
+     * @param roleId 当非空时，将checked属性设置为真，进行回显
+     * @return
+     */
     @Override
     public List<TreeDto> queryAllMenus(Integer roleId) {
         List<TreeDto> treeDtos = this.baseMapper.queryAllMenus();

@@ -55,6 +55,11 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         }
     }
 
+    /**
+     * 选择性展示商品信息
+     * @param goodsQuery
+     * @return
+     */
     @Override
     public Map<String, Object> goodsList(GoodsQuery goodsQuery) {
         IPage<Goods> page = new Page<Goods>(goodsQuery.getPage(), goodsQuery.getLimit());
@@ -65,6 +70,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         return PageResultUtil.getResult(page.getTotal(), page.getRecords());
     }
 
+    /**
+     * 新增商品
+     * @param goods
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveGoods(Goods goods) {
@@ -90,6 +99,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         AssertUtil.isTrue(!(this.save(goods)), "商品记录添加失败!");
     }
 
+    /**
+     * 更新商品信息
+     * @param goods
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateGoods(Goods goods) {
@@ -103,6 +116,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         AssertUtil.isTrue(!(this.updateById(goods)), "商品更新失败");
     }
 
+    /**
+     * 删除商品信息
+     * @param id
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteGoods(Integer id) {
@@ -121,6 +138,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         AssertUtil.isTrue(!(this.updateById(goods)), "商品删除失败!");
     }
 
+    /**
+     * 更新指定商品库存
+     * @param goods
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateStock(Goods goods) {
@@ -134,6 +155,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         AssertUtil.isTrue(!(this.updateById(goods)), "商品更新失败!");
     }
 
+    /**
+     * 删除指定商品库存
+     * @param id
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteStock(Integer id) {
@@ -144,6 +169,11 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         AssertUtil.isTrue(!(this.updateById(temp)), "商品删除失败!");
     }
 
+    /**
+     * 获得指定商品信息
+     * @param gid
+     * @return
+     */
     @Override
     public Goods getGoodsInfoById(Integer gid) {
         return this.baseMapper.getGoodsInfoById(gid);

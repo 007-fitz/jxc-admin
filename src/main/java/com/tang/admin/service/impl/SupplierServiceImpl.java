@@ -43,6 +43,11 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         return this.getOne(new QueryWrapper<Supplier>().eq("is_del", 0).eq("name", name));
     }
 
+    /**
+     * 展示供应商信息
+     * @param supplierQuery
+     * @return
+     */
     @Override
     public Map<String, Object> listSupplier(SupplierQuery supplierQuery) {
         IPage<Supplier> page = new Page<Supplier>(supplierQuery.getPage(), supplierQuery.getLimit());
@@ -55,6 +60,10 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         return PageResultUtil.getResult(page.getTotal(), page.getRecords());
     }
 
+    /**
+     * 保存供应商信息
+     * @param supplier
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveSupplier(Supplier supplier) {
@@ -69,6 +78,10 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         AssertUtil.isTrue(!(this.save(supplier)), "记录添加失败!");
     }
 
+    /**
+     * 更新供应商信息
+     * @param supplier
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public void updateSupplier(Supplier supplier) {
@@ -79,12 +92,22 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         AssertUtil.isTrue(!(this.updateById(supplier)), "记录更新失败!");
     }
 
+    /**
+     * 供应商信息非空校验
+     * @param name
+     * @param contact
+     * @param number
+     */
     private void checkParams(String name, String contact, String number) {
         AssertUtil.isTrue(StringUtils.isBlank(name), "请输入供应商名称!");
         AssertUtil.isTrue(StringUtils.isBlank(contact), "请输入联系人!");
         AssertUtil.isTrue(StringUtils.isBlank(number), "请输入联系电话!");
     }
 
+    /**
+     * 删除供应商
+     * @param ids
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public void deleteSupplier(Integer[] ids) {

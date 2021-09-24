@@ -135,6 +135,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         return this.baseMapper.queryAllRoles(userId);
     }
 
+    /**
+     * 给指定角色分配权限
+     * @param roleId
+     * @param mids
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void addGrant(Integer roleId, Integer[] mids) {

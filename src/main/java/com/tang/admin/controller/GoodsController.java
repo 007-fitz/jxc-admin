@@ -35,17 +35,33 @@ public class GoodsController {
     @Resource
     private IGoodsTypeService goodsTypeService;
 
+    /**
+     * 商品展示 页面
+     * @return
+     */
     @RequestMapping("/index")
     public String index() {
         return "/goods/goods";
     }
 
+    /**
+     * 商品展示
+     * @param goodsQuery
+     * @return
+     */
     @RequestMapping("/list")
     @ResponseBody
     public Map<String, Object> goodsList(GoodsQuery goodsQuery) {
         return goodsService.goodsList(goodsQuery);
     }
 
+    /**
+     * 商品新增/更新 页面
+     * @param id
+     * @param typeId
+     * @param model
+     * @return
+     */
     @RequestMapping("/addOrUpdateGoodsPage")
     public String addOrUpdateGoodsPage(Integer id, Integer typeId, Model model) {
         if (id != null) {
@@ -60,12 +76,23 @@ public class GoodsController {
         return "/goods/add_update";
     }
 
+    /**
+     * 商品类别展示页面，以提供选择 商品和商品类别 之间的关系
+     * @param typeId
+     * @param model
+     * @return
+     */
     @RequestMapping("/toGoodsTypePage")
     public String toGoodsTypePage(Integer typeId, Model model) {
         model.addAttribute("typeId", typeId);
         return "/goods/goods_type";
     }
 
+    /**
+     * 新增商品信息
+     * @param goods
+     * @return
+     */
     @RequestMapping("/save")
     @ResponseBody
     public RespBean save(Goods goods) {
@@ -73,6 +100,11 @@ public class GoodsController {
         return RespBean.success("商品添加成功");
     }
 
+    /**
+     * 更新商品信息
+     * @param goods
+     * @return
+     */
     @RequestMapping("/update")
     @ResponseBody
     public RespBean update(Goods goods) {
@@ -80,6 +112,11 @@ public class GoodsController {
         return RespBean.success("商品更新成功");
     }
 
+    /**
+     * 删除商品记录
+     * @param id
+     * @return
+     */
     @RequestMapping("/delete")
     @ResponseBody
     public RespBean delete(Integer id) {

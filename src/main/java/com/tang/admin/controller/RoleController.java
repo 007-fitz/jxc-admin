@@ -95,6 +95,7 @@ public class RoleController {
 
     /**
      * 删除角色
+     *
      * @param id
      * @return
      */
@@ -107,6 +108,7 @@ public class RoleController {
 
     /**
      * 授权页面展示
+     *
      * @return
      */
     @RequestMapping("/toAddGrantPage")
@@ -117,6 +119,7 @@ public class RoleController {
 
     /**
      * 用户-权限 关系建立
+     *
      * @param roleId
      * @param mids
      * @return
@@ -130,12 +133,13 @@ public class RoleController {
 
     /**
      * 角色简约展示，对于特定的用户，当已存在用户角色关系时，经进行回显标记
+     *
      * @param userId
      * @return
      */
     @RequestMapping("queryAllRoles")
     @ResponseBody
-    public List<Map<String,Object>> queryAllRoles(Integer userId){
+    public List<Map<String, Object>> queryAllRoles(Integer userId) {
         return roleService.queryAllRoles(userId);
     }
 

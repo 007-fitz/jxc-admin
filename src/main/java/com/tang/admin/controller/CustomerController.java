@@ -29,17 +29,32 @@ public class CustomerController {
     @Resource
     private ICustomerService customerService;
 
+    /**
+     * 客户信息展示页面
+     * @return
+     */
     @RequestMapping("/index")
     public String index() {
         return "/customer/customer";
     }
 
+    /**
+     * 客户信息展示
+     * @param customerQuery
+     * @return
+     */
     @RequestMapping("/list")
     @ResponseBody
     public Map<String, Object> customersList(CustomerQuery customerQuery) {
         return customerService.customerList(customerQuery);
     }
 
+    /**
+     * 新增/更新客户记录 页面
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/addOrUpdateCustomerPage")
     public String addOrUpdateCustomerPage(Integer id, Model model) {
         if (id != null) {
@@ -48,6 +63,11 @@ public class CustomerController {
         return "/customer/add_update";
     }
 
+    /**
+     * 新增客户记录
+     * @param customer
+     * @return
+     */
     @RequestMapping("/save")
     @ResponseBody
     public RespBean save(Customer customer) {
@@ -55,6 +75,11 @@ public class CustomerController {
         return RespBean.success("客户添加成功");
     }
 
+    /**
+     * 更新客户记录
+     * @param customer
+     * @return
+     */
     @RequestMapping("/update")
     @ResponseBody
     public RespBean update(Customer customer) {
@@ -62,6 +87,11 @@ public class CustomerController {
         return RespBean.success("客户更新成功");
     }
 
+    /**
+     * 删除客户记录
+     * @param ids
+     * @return
+     */
     @RequestMapping("/delete")
     @ResponseBody
     public RespBean delete(Integer[] ids) {

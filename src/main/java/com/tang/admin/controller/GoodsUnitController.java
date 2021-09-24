@@ -26,6 +26,10 @@ public class GoodsUnitController {
     @Resource
     private IGoodsUnitService goodsUnitService;
 
+    /**
+     * 商品单位展示
+     * @return
+     */
     @RequestMapping("/allGoodsUnits")
     @ResponseBody
     public List<GoodsUnit> allGoodsUnits() {

@@ -36,12 +36,20 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
     @Resource
     private IGoodsService goodsService;
 
+    /**
+     * 层级展示所有商品类别
+     * @return layui层级展示所需数据格式
+     */
     @Override
     public Map<String, Object> listGoodsType() {
         List<GoodsType> list = this.list();
         return PageResultUtil.getResult((long) list.size(), list);
     }
 
+    /**
+     * 新增商品类别
+     * @param goodsType
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveGoodsType(GoodsType goodsType) {
@@ -58,11 +66,21 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
         }
     }
 
+    /**
+     * 在指定父节点下，查找指定名称的商品类别
+     * @param name
+     * @param pid
+     * @return
+     */
     @Override
     public GoodsType findGoodsTypeByNameAndPid(String name, Integer pid) {
         return this.getOne(new QueryWrapper<GoodsType>().eq("name", name).eq("p_id", pid));
     }
 
+    /**
+     * 删除商品类别
+     * @param id
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteGoodsType(Integer id) {
@@ -85,6 +103,11 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
         AssertUtil.isTrue(!this.removeById(id), "记录删除失败");
     }
 
+    /**
+     * 层级展示所有商品类别(简约版)
+     * @param typeId 如果非空，则设置checked属性为真，以回显
+     * @return zTree层级展示所需数据格式
+     */
     @Override
     public List<TreeDto> queryAllGoodsTypes(Integer typeId) {
         List<TreeDto> treeDtos = this.baseMapper.queryAllGoodsTypes(typeId);
@@ -100,6 +123,11 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
         return treeDtos;
     }
 
+    /**
+     * 根据指定商品类别id，查找其下所有子节点
+     * @param typeId
+     * @return 该节点及所有子节点的id
+     */
     @Override
     public List<Integer> queryAllSubTypeIdsByTypeId(Integer typeId) {
         if(typeId==1){
@@ -112,6 +140,11 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
         return result;
     }
 
+    /**
+     * 递归函数  查找指定节点下的所有子节点，对每个子节点都 加入集合，同时递归将该子节点下的所有节点加入集合
+     * @param typeId
+     * @param result
+     */
     private void getSubAndAdd(Integer typeId, ArrayList<Integer> result) {
         List<GoodsType> subs = this.baseMapper.selectList(new QueryWrapper<GoodsType>().eq("p_id", typeId));
         if (subs != null) {

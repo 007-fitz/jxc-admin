@@ -4,20 +4,51 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.tang.admin.pojo.ReturnList">
-        <id column="id" property="id" />
-        <result column="amount_paid" property="amountPaid" />
-        <result column="amount_payable" property="amountPayable" />
-        <result column="remarks" property="remarks" />
-        <result column="return_date" property="returnDate" />
-        <result column="return_number" property="returnNumber" />
-        <result column="state" property="state" />
-        <result column="supplier_id" property="supplierId" />
-        <result column="user_id" property="userId" />
+        <id column="id" property="id"/>
+        <result column="amount_paid" property="amountPaid"/>
+        <result column="amount_payable" property="amountPayable"/>
+        <result column="remarks" property="remarks"/>
+        <result column="return_date" property="returnDate"/>
+        <result column="return_number" property="returnNumber"/>
+        <result column="state" property="state"/>
+        <result column="supplier_id" property="supplierId"/>
+        <result column="user_id" property="userId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, amount_paid, amount_payable, remarks, return_date, return_number, state, supplier_id, user_id
     </sql>
+
+    <select id="getNextReturnNumber" resultType="java.lang.String">
+        select max(return_number) as returnNumber
+        from t_return_list
+        where to_days(return_date) = to_days(now())
+    </select>
+
+    <select id="listReturnList" resultType="com.tang.admin.pojo.ReturnList">
+        SELECT tl.*, u.user_name AS userName, s.NAME AS supplierName
+        FROM t_return_list tl
+        LEFT JOIN t_user u ON tl.user_id = u.id
+        LEFT JOIN t_supplier s ON tl.supplier_id = s.id
+        <where>
+            <if test="null !=rlQuery.returnNumber and rlQuery.returnNumber !='' ">
+                and tl.return_number like concat('%', #{rlQuery.returnNumber}, '%')
+            </if>
+            <if test="null !=rlQuery.supplierId">
+                and tl.supplier_id = #{rlQuery.supplierId}
+            </if>
+            <if test="null !=rlQuery.state">
+                and tl.state = #{rlQuery.state}
+            </if>
+            <if test="null != rlQuery.startDate and rlQuery.startDate !='' ">
+                and return_date &gt;= #{rlQuery.startDate}
+            </if>
+            <if test="null !=rlQuery.endDate and rlQuery.endDate !='' ">
+                and return_date &lt;= #{rlQuery.endDate}
+            </if>
+
+        </where>
+    </select>
 
 </mapper>

@@ -23,6 +23,10 @@ import java.util.Map;
 /**
  * <p>
  * 商品表 服务实现类
+ *    - 不同于商城项目中的商品表(特定商家/供应商关联特定商品，用户从众多商品中，选择加入购物车，购物车中多条记录合并为一个订单)，
+ *    - 此处的商品表偏向于公司自身的需求，记录进表中的都是公司需求的。
+ *      故商品和库存1:1合并，共用一张表。商品自身信息的维护、商品库存的维护 两个方面的操作从逻辑上大致分开。
+ *      面向供应商的采购/退货体系，面向客户的销售/退货体系 两方面，最终主要的影响都是影响库存
  * </p>
  *
  * @author leo
@@ -177,6 +181,27 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     @Override
     public Goods getGoodsInfoById(Integer gid) {
         return this.baseMapper.getGoodsInfoById(gid);
+    }
+
+    /**
+     * 商品库存展示
+     * @param goodsQuery
+     * @return
+     */
+    @Override
+    public Map<String, Object> stockList(GoodsQuery goodsQuery) {
+        IPage<Goods> page = new Page<Goods>(goodsQuery.getPage(),goodsQuery.getLimit());
+
+        if(null !=goodsQuery.getTypeId()){
+            goodsQuery.setTypeIds(goodsTypeService.queryAllSubTypeIdsByTypeId(goodsQuery.getTypeId()));
+        }
+        page =  this.baseMapper.queryGoodsByParams(page,goodsQuery);
+        List<Goods> goodsList = page.getRecords();
+//        goodsList.forEach(g->{
+//            g.setSaleTotal( saleListGoodsService.getSaleTotalByGoodIs(g.getId()) -
+//                    customerReturnListGoodsService.getReturnTotalByGoodId(g.getId()));
+//        });
+        return PageResultUtil.getResult(page.getTotal(),page.getRecords());
     }
 
 }

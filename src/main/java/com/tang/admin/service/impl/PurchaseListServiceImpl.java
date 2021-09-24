@@ -5,11 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tang.admin.pojo.Goods;
-import com.tang.admin.pojo.PurchaseList;
+import com.tang.admin.pojo.*;
 import com.tang.admin.mapper.PurchaseListMapper;
-import com.tang.admin.pojo.PurchaseListGoods;
-import com.tang.admin.pojo.User;
 import com.tang.admin.query.PurchaseListQuery;
 import com.tang.admin.service.IGoodsService;
 import com.tang.admin.service.IPurchaseListGoodsService;
@@ -21,6 +18,8 @@ import com.tang.admin.utils.DateUtil;
 import com.tang.admin.utils.PageResultUtil;
 import com.tang.admin.utils.StringUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -77,7 +76,10 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
      * @param plgList 订单所包含的商品信息
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void savePurchaseList(String username, PurchaseList purchaseList, List<PurchaseListGoods> plgList) {
+        int count = this.count(new QueryWrapper<PurchaseList>().eq("purchase_number", purchaseList.getPurchaseNumber()));
+        AssertUtil.isTrue(count != 0, "订单编号已存在");
         AssertUtil.isTrue(null == purchaseList.getSupplierId(), "请指定供应商");
         AssertUtil.isTrue(null == plgList, "请选择商品");
 
@@ -105,9 +107,19 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
     @Override
     public Map<String, Object> listPurchaseList(PurchaseListQuery purchaseListQuery) {
         IPage<PurchaseList> page = new Page<PurchaseList>(purchaseListQuery.getPage(), purchaseListQuery.getLimit());
-
         page = this.baseMapper.listPurchaseList(page, purchaseListQuery);
         return PageResultUtil.getResult(page.getTotal(), page.getRecords());
+    }
+
+    /**
+     * 删除进货订单，同时删除订单所关联的商品信息
+     * @param id
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deletePurchaseList(Integer id) {
+        AssertUtil.isTrue(!purchaseListGoodsService.remove(new QueryWrapper<PurchaseListGoods>().eq("purchase_list_id", id)), "进货订单删除失败01");
+        AssertUtil.isTrue(!this.removeById(id), "进货订单删除失败02");
     }
 
 

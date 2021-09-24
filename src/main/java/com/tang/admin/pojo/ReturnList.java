@@ -1,14 +1,19 @@
 package com.tang.admin.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -40,7 +45,9 @@ public class ReturnList implements Serializable {
     private String remarks;
 
     @ApiModelProperty(value = "退货日期")
-    private LocalDateTime returnDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    private Date returnDate;
 
     @ApiModelProperty(value = "退货单号")
     private String returnNumber;
@@ -54,5 +61,10 @@ public class ReturnList implements Serializable {
     @ApiModelProperty(value = "操作用户")
     private Integer userId;
 
+    @TableField(exist = false)
+    private String supplierName;
+
+    @TableField(exist = false)
+    private String userName;
 
 }

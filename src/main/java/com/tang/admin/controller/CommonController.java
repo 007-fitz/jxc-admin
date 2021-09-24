@@ -1,11 +1,14 @@
 package com.tang.admin.controller;
 
+import com.tang.admin.query.GoodsQuery;
 import com.tang.admin.service.IGoodsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * <p>
@@ -63,7 +66,23 @@ public class CommonController {
         if (num != null) {
             model.addAttribute("num", num);
         }
+        model.addAttribute("flag", 1);
         return "/common/goods_add_update";
+    }
+
+    /**
+     * 商品库存展示 页面
+     * @return
+     */
+    @RequestMapping("/toGoodsStockPage")
+    public String toGoodsStockPage() {
+        return "/common/stock_search";
+    }
+
+    @RequestMapping("/stockList")
+    @ResponseBody
+    public Map<String, Object> stockList(GoodsQuery goodsQuery) {
+        return goodsService.stockList(goodsQuery);
     }
 }
 

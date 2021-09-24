@@ -22,7 +22,9 @@ import java.util.Map;
 /**
  * <p>
  * 进货单 前端控制器
+ * (某用户从某供应商进货，创建进货入库订单，一个订单包含多个商品信息，1:1使对应商品库存增加)
  * </p>
+ *
  *
  * @author leo
  * @since 2021-09-23
@@ -81,6 +83,18 @@ public class PurchaseListController {
     @ResponseBody
     public Map<String, Object> list(PurchaseListQuery purchaseListQuery) {
         return purchaseListService.listPurchaseList(purchaseListQuery);
+    }
+
+    /**
+     * 删除进货订单
+     * @param id
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public RespBean delete(Integer id) {
+        purchaseListService.deletePurchaseList(id);
+        return RespBean.success("进货订单删除成功");
     }
 
 

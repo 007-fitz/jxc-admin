@@ -24,4 +24,6 @@ public interface IPurchaseListService extends IService<PurchaseList> {
 
     Map<String, Object> listPurchaseList(PurchaseListQuery purchaseListQuery);
 
+    void deletePurchaseList(Integer id);
+
 }

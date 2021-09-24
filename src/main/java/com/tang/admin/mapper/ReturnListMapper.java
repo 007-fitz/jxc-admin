@@ -1,7 +1,9 @@
 package com.tang.admin.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tang.admin.pojo.ReturnList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tang.admin.query.ReturnListQuery;
 
 /**
  * <p>
@@ -12,5 +14,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2021-09-23
  */
 public interface ReturnListMapper extends BaseMapper<ReturnList> {
+
+    String getNextReturnNumber();
+
+    IPage<ReturnList> listReturnList(IPage<ReturnList> page, ReturnListQuery rlQuery);
 
 }

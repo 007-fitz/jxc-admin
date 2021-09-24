@@ -1,6 +1,7 @@
 package com.tang.admin.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tang.admin.model.RespBean;
 import com.tang.admin.pojo.Supplier;
 import com.tang.admin.query.SupplierQuery;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,6 +70,12 @@ public class SupplierController {
     public RespBean delete(Integer[] ids) {
         supplierService.deleteSupplier(ids);
         return RespBean.success("供应商删除成功");
+    }
+
+    @RequestMapping("/allGoodsSuppliers")
+    @ResponseBody
+    public List<Supplier> allGoodsSuppliers() {
+        return supplierService.list(new QueryWrapper<Supplier>().eq("is_del",0));
     }
 
 }

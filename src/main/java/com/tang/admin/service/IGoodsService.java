@@ -30,4 +30,5 @@ public interface IGoodsService extends IService<Goods> {
 
     void deleteStock(Integer id);
 
+    Goods getGoodsInfoById(Integer gid);
 }

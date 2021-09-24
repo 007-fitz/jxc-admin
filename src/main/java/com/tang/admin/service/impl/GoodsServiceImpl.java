@@ -144,4 +144,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         AssertUtil.isTrue(!(this.updateById(temp)), "商品删除失败!");
     }
 
+    @Override
+    public Goods getGoodsInfoById(Integer gid) {
+        return this.baseMapper.getGoodsInfoById(gid);
+    }
+
 }

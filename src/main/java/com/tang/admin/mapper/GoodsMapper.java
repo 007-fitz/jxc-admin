@@ -17,5 +17,6 @@ public interface GoodsMapper extends BaseMapper<Goods> {
 
     IPage<Goods> queryGoodsByParams(IPage<Goods> page, GoodsQuery goodsQuery);
 
+    Goods getGoodsInfoById(Integer gid);
 
 }

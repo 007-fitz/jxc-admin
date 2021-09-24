@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tang.admin.mapper.PurchaseListMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tang.admin.pojo.PurchaseList">
+        <id column="id" property="id"/>
+        <result column="amount_paid" property="amountPaid"/>
+        <result column="amount_payable" property="amountPayable"/>
+        <result column="purchase_date" property="purchaseDate"/>
+        <result column="remarks" property="remarks"/>
+        <result column="state" property="state"/>
+        <result column="purchase_number" property="purchaseNumber"/>
+        <result column="supplier_id" property="supplierId"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, amount_paid, amount_payable, purchase_date, remarks, state, purchase_number, supplier_id, user_id
+    </sql>
+
+    <select id="getNextPurchaseNumber" resultType="java.lang.String">
+        select max(purchase_number) as purchaseNumber
+        from t_purchase_list
+        where to_days(purchase_date) = to_days(now())
+    </select>
+
+    <select id="listPurchaseList" resultType="com.tang.admin.pojo.PurchaseList">
+
+        select tpl.*, ts.name supplierName, tu.user_name userName
+        from t_purchase_list tpl
+        left join t_supplier ts on tpl.supplier_id = ts.id
+        left join t_user tu on tpl.user_id = tu.id
+        <where>
+            <if test="null != plQuery.purchaseNumber and '' != plQuery.purchaseNumber">
+                and tpl.purchase_number like concat('%', #{plQuery.purchaseNumber},'%')
+            </if>
+            <if test="plQuery.supplierId != null">
+                and tpl.supplier_id = #{plQuery.supplierId}
+            </if>
+            <if test="plQuery.state != null">
+                and tpl.state = #{plQuery.state}
+            </if>
+            <if test="null != plQuery.startDate and plQuery.startDate !='' ">
+                and purchase_date &gt;=#{plQuery.startDate}
+            </if>
+            <if test="null !=plQuery.endDate and plQuery.endDate !='' ">
+                and purchase_date &lt;=#{plQuery.endDate}
+            </if>
+        </where>
+    </select>
+
+</mapper>

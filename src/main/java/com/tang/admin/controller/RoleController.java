@@ -1,7 +1,7 @@
 package com.tang.admin.controller;
 
 
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.model.RespBean;
 import com.tang.admin.pojo.Role;
 import com.tang.admin.query.RoleQuery;
 import com.tang.admin.service.IRoleService;

@@ -1,6 +1,6 @@
 package com.tang.admin.service;
 
-import com.tang.admin.dto.TreeDto;
+import com.tang.admin.pojo.dto.TreeDto;
 import com.tang.admin.pojo.GoodsType;
 import com.baomidou.mybatisplus.extension.service.IService;
 

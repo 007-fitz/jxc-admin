@@ -1,8 +1,8 @@
 package com.tang.admin.controller;
 
 
-import com.tang.admin.dto.TreeDto;
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.dto.TreeDto;
+import com.tang.admin.pojo.model.RespBean;
 import com.tang.admin.pojo.Menu;
 import com.tang.admin.service.IMenuService;
 import org.springframework.ui.Model;

@@ -1,12 +1,10 @@
 package com.tang.admin.controller;
 
 
-import com.tang.admin.dto.TreeDto;
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.dto.TreeDto;
+import com.tang.admin.pojo.model.RespBean;
 import com.tang.admin.pojo.GoodsType;
-import com.tang.admin.pojo.Supplier;
 import com.tang.admin.service.IGoodsTypeService;
-import com.tang.admin.service.ISupplierService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 

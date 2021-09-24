@@ -1,4 +1,4 @@
-package com.tang.admin.model;
+package com.tang.admin.pojo.model;
 
 import java.time.LocalDateTime;
 

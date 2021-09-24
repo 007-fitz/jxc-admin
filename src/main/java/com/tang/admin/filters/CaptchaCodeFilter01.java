@@ -1,8 +1,8 @@
 package com.tang.admin.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tang.admin.model.CaptchaImageModel;
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.model.CaptchaImageModel;
+import com.tang.admin.pojo.model.RespBean;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Component;

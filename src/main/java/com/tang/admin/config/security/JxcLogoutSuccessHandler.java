@@ -9,10 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @author 小开心
- * @version 1.0
- */
 @Component
 public class JxcLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override

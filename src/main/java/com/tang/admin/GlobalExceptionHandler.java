@@ -1,7 +1,7 @@
 package com.tang.admin;
 
 import com.tang.admin.exceptions.ParamsException;
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.model.RespBean;
 //import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

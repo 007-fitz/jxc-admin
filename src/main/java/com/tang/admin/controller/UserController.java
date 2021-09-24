@@ -1,18 +1,15 @@
 package com.tang.admin.controller;
 
 
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.model.RespBean;
 import com.tang.admin.pojo.User;
 import com.tang.admin.query.UserQuery;
 import com.tang.admin.service.IUserService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;

@@ -16,7 +16,7 @@
         id, name, p_id, state, icon
     </sql>
 
-    <select id="queryAllGoodsTypes" resultType="com.tang.admin.dto.TreeDto">
+    <select id="queryAllGoodsTypes" resultType="com.tang.admin.pojo.dto.TreeDto">
         select id, p_id pId, name
         from t_goods_type
     </select>

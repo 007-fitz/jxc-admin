@@ -3,7 +3,7 @@ package com.tang.admin.controller;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.model.RespBean;
 import com.tang.admin.pojo.PurchaseList;
 import com.tang.admin.pojo.PurchaseListGoods;
 import com.tang.admin.query.PurchaseListQuery;

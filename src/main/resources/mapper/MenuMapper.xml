@@ -20,7 +20,7 @@
         id, icon, name, state, url, p_id, acl_value, grade, is_del
     </sql>
 
-    <select id="queryAllMenus" resultType="com.tang.admin.dto.TreeDto">
+    <select id="queryAllMenus" resultType="com.tang.admin.pojo.dto.TreeDto">
         select id, p_id pId, name
         from t_menu
         where is_del = 0

@@ -2,7 +2,7 @@ package com.tang.admin.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.model.RespBean;
 import com.tang.admin.pojo.Supplier;
 import com.tang.admin.query.SupplierQuery;
 import com.tang.admin.service.ISupplierService;

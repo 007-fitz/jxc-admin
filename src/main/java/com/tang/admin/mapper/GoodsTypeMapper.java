@@ -1,11 +1,10 @@
 package com.tang.admin.mapper;
 
-import com.tang.admin.dto.TreeDto;
+import com.tang.admin.pojo.dto.TreeDto;
 import com.tang.admin.pojo.GoodsType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>

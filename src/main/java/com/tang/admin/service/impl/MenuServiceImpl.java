@@ -2,7 +2,7 @@ package com.tang.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.tang.admin.dto.TreeDto;
+import com.tang.admin.pojo.dto.TreeDto;
 import com.tang.admin.pojo.Menu;
 import com.tang.admin.mapper.MenuMapper;
 import com.tang.admin.pojo.RoleMenu;

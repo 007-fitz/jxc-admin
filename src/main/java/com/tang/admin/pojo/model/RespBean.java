@@ -1,4 +1,4 @@
-package com.tang.admin.model;
+package com.tang.admin.pojo.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

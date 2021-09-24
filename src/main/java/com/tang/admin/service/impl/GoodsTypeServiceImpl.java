@@ -1,7 +1,7 @@
 package com.tang.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.tang.admin.dto.TreeDto;
+import com.tang.admin.pojo.dto.TreeDto;
 import com.tang.admin.pojo.Goods;
 import com.tang.admin.pojo.GoodsType;
 import com.tang.admin.mapper.GoodsTypeMapper;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

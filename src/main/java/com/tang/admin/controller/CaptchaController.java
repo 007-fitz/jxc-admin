@@ -1,7 +1,7 @@
 package com.tang.admin.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
-import com.tang.admin.model.CaptchaImageModel;
+import com.tang.admin.pojo.model.CaptchaImageModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

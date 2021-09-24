@@ -1,7 +1,7 @@
 package com.tang.admin.controller;
 
 
-import com.tang.admin.model.RespBean;
+import com.tang.admin.pojo.model.RespBean;
 import com.tang.admin.pojo.Customer;
 import com.tang.admin.query.CustomerQuery;
 import com.tang.admin.service.ICustomerService;

@@ -123,6 +123,7 @@ public class SaleListServiceImpl extends ServiceImpl<SaleListMapper, SaleList> i
      * @param id
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteSaleList(Integer id) {
         AssertUtil.isTrue(!(saleListGoodsService.remove(new QueryWrapper<SaleListGoods>().eq("sale_list_id", id))), "记录删除失败");
         AssertUtil.isTrue(!(this.removeById(id)), "记录删除失败");

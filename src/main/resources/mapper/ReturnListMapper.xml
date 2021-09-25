@@ -27,19 +27,19 @@
     </select>
 
     <select id="listReturnList" resultType="com.tang.admin.pojo.ReturnList">
-        SELECT tl.*, u.user_name AS userName, s.NAME AS supplierName
-        FROM t_return_list tl
-        LEFT JOIN t_user u ON tl.user_id = u.id
-        LEFT JOIN t_supplier s ON tl.supplier_id = s.id
+        SELECT rl.*, u.user_name AS userName, s.NAME AS supplierName
+        FROM t_return_list rl
+        LEFT JOIN t_user u ON rl.user_id = u.id
+        LEFT JOIN t_supplier s ON rl.supplier_id = s.id
         <where>
             <if test="null !=rlQuery.returnNumber and rlQuery.returnNumber !='' ">
-                and tl.return_number like concat('%', #{rlQuery.returnNumber}, '%')
+                and rl.return_number like concat('%', #{rlQuery.returnNumber}, '%')
             </if>
             <if test="null !=rlQuery.supplierId">
-                and tl.supplier_id = #{rlQuery.supplierId}
+                and rl.supplier_id = #{rlQuery.supplierId}
             </if>
             <if test="null !=rlQuery.state">
-                and tl.state = #{rlQuery.state}
+                and rl.state = #{rlQuery.state}
             </if>
             <if test="null != rlQuery.startDate and rlQuery.startDate !='' ">
                 and return_date &gt;= #{rlQuery.startDate}

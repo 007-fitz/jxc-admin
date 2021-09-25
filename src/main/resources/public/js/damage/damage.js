@@ -1,68 +1,71 @@
-layui.use(['laydate','table','layer'],function(){
-       var layer = parent.layer === undefined ? layui.layer : top.layer,
+layui.use(['laydate', 'table', 'layer'], function () {
+    var layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
         laydate = layui.laydate,
         form = layui.form
-        table = layui.table;
+    table = layui.table;
 
     laydate.render({
         elem: '#damageDate'
     });
 
 
-
-     var tableIns =table.render({
+    var tableIns = table.render({
         elem: '#damageList',
-        height : "full-125",
+        height: "full-125",
         toolbar: "#toolbarDemo",
-        id : "damageListTable",
-        cols : [[
-            {field: 'code', title: '商品编码', minWidth:50, align:"center"},
-            {field: 'name', title: '商品名称', minWidth:100, align:'center'},
-            {field: 'model', title: '商品型号', minWidth:100, align:'center'},
-            {field: 'price', title: '单价', minWidth:100, align:'center'},
-            {field: 'num', title: '数量', minWidth:100, align:'center'},
-            {field: 'unit', title: '单位', minWidth:100, align:'center'},
-            {field: 'total', title: '总金额', minWidth:100, align:'center'},
-            {title: '操作', minWidth:150, templet:'#goodsListBar',fixed:"right",align:"center"}
+        id: "damageListTable",
+        cols: [[
+            {field: 'code', title: '商品编码', minWidth: 50, align: "center"},
+            {field: 'name', title: '商品名称', minWidth: 100, align: 'center'},
+            {field: 'model', title: '商品型号', minWidth: 100, align: 'center'},
+            {field: 'price', title: '单价', minWidth: 100, align: 'center'},
+            {field: 'num', title: '数量', minWidth: 100, align: 'center'},
+            {field: 'unit', title: '单位', minWidth: 100, align: 'center'},
+            {field: 'total', title: '总金额', minWidth: 100, align: 'center'},
+            {title: '操作', minWidth: 150, templet: '#goodsListBar', fixed: "right", align: "center"}
         ]],
-        data:[]
+        data: []
     });
 
     //头工具栏事件
-    table.on('toolbar(damages)', function(obj){
-        switch(obj.event){
+    table.on('toolbar(damages)', function (obj) {
+        switch (obj.event) {
             case "add":
                 openGoodsDialog();
                 break;
 
-        };
+        }
+        ;
     });
 
-    function openGoodsDialog(){
-        var url  =  ctx+"/common/toSelectGoodsPage";
-        var title="商品报损商品选择";
+    function openGoodsDialog() {
+        var url = ctx + "/common/toSelectGoodsPage";
+        var title = "商品报损商品选择";
         layui.layer.open({
-            title : title,
-            type : 2,
-            area:["950px","600px"],
-            maxmin:true,
-            content : url
+            title: title,
+            type: 2,
+            area: ["950px", "600px"],
+            maxmin: true,
+            content: url
         });
     }
 
     /**
      * 行监听
      */
-    table.on("tool(damages)", function(obj){
+    table.on("tool(damages)", function (obj) {
+        console.log(obj.data.goodsId);
+        // console.log(obj.data.id);
+        console.log(datas);
         var layEvent = obj.event;
-        if(layEvent === "edit") {
-            openUpdateGoodsInfoDialog(obj.data.id);
-        }else if(layEvent === "del") {
+        if (layEvent === "edit") {
+            openUpdateGoodsInfoDialog(obj.data.goodsId);
+        } else if (layEvent === "del") {
             layer.confirm('确定移除当前商品？', {icon: 3, title: "商品选择"}, function (index) {
-                datas.forEach((item,i) => {
-                    if(item.id === obj.data.id){
-                        datas.splice(i,1);
+                datas.forEach((item, i) => {
+                    if (item.goodsId === obj.data.goodsId) {
+                        datas.splice(i, 1);
                     }
                 });
                 reloadTableData();
@@ -72,22 +75,22 @@ layui.use(['laydate','table','layer'],function(){
     });
 
 
-    function openUpdateGoodsInfoDialog(id){
+    function openUpdateGoodsInfoDialog(goodsId) {
         var goods;
         for (let i = 0; i < datas.length; i++) {
-            if(datas[i].id==id){
-                goods= datas[i];
+            if (datas[i].goodsId == goodsId) {
+                goods = datas[i];
                 break;
             }
         }
-        var url  =  ctx+"/common/toUpdateGoodsInfoPage?id="
-            +goods.goodsId+"&price="+goods.price+"&num="+goods.num+"&total="+goods.total;
+        var url = ctx + "/common/toUpdateGoodsInfoPage?id="
+            + goods.goodsId + "&price=" + goods.price + "&num=" + goods.num + "&total=" + goods.total;
         layui.layer.open({
-            title : "商品信息更新",
-            type : 2,
-            area:["800px","550px"],
-            maxmin:true,
-            content : url
+            title: "商品信息更新",
+            type: 2,
+            area: ["800px", "550px"],
+            maxmin: true,
+            content: url
         });
     }
 
@@ -102,7 +105,7 @@ layui.use(['laydate','table','layer'],function(){
                     layer.closeAll("iframe");
                     //刷新父页面
                     parent.location.reload();
-                   window.location.href=ctx+"/damage/index";
+                    window.location.href = ctx + "/damage/index";
                 }, 500);
             } else {
                 layer.msg(
@@ -116,56 +119,59 @@ layui.use(['laydate','table','layer'],function(){
     });
 
 
-
 });
 
-var datas=[];
- function getGoodsSelectInfo(gid,gname,code,price,num,model,unit,typeId,flag){
-     console.log(gid,gname,code,price,num,model,unit,typeId,flag)
-     if(flag){
-         // 添加操作
-         datas.push({
-             "goodsId":gid,
-             "code":code,
-             "name":gname,
-             "price":price,
-             "num":num,
-             "model":model,
-             "unit":unit,
-             "typeId":typeId,
-             "total":price*num
-         });
-     }else{
-         // 更新操作
-         datas.forEach((item,i) => {
-             if(item.goodsId == gid){
-                 // 修改价格、数量与总金额即可
-                 item.price=price;
-                 item.num=num;
-                 item.total=price*num;
-             }
-         });
-     }
+var datas = [];
 
-     /**
-      * 重载表格数据
-      */
-     reloadTableData();
- }
+function getGoodsSelectInfo(gid, gname, code, price, num, model, unit, typeId, flag) {
+    if (num == "") {
+        num = "0";
+    }
+    console.log(gid, gname, code, price, num, model, unit, typeId, flag);
+    if (flag) {
+        // 添加操作
+        datas.push({
+            "goodsId": gid,
+            "code": code,
+            "name": gname,
+            "price": price,
+            "num": num,
+            "model": model,
+            "unit": unit,
+            "typeId": typeId,
+            "total": price * num
+        });
+    } else {
+        // 更新操作
+        datas.forEach((item, i) => {
+            if (item.goodsId == gid) {
+                // 修改价格、数量与总金额即可
+                item.price = price;
+                item.num = num;
+                item.total = price * num;
+            }
+        });
+    }
+
+    /**
+     * 重载表格数据
+     */
+    reloadTableData();
+}
 
 
- function reloadTableData(){
-     layui.table.reload("damageListTable",{
-         data:datas
-     })
-     var total=0;
-     for (let i = 0; i < datas.length; i++) {
-         total = total + datas[i].total;
-     }
-     layui.jquery("#amountPayable").val(total);
-     layui.jquery("#amountPaid").val(total);
-     // 设置选择商品json数据到隐藏域 便于后续表单提交
-     layui.jquery("input[name='goodsJson']").val(JSON.stringify(datas));
- }
+function reloadTableData() {
+    layui.table.reload("damageListTable", {
+        data: datas
+    })
+    var total = 0;
+    for (let i = 0; i < datas.length; i++) {
+        total = total + datas[i].total;
+    }
+    layui.jquery("#amountPayable").val(total);
+    layui.jquery("#amountPaid").val(total);
+    // 设置选择商品json数据到隐藏域 便于后续表单提交
+    layui.jquery("input[name='goodsJson']").val(JSON.stringify(datas));
+}
 
 

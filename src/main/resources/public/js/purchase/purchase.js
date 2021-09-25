@@ -77,7 +77,7 @@ layui.use(['element','laydate','table','layer'],function(){
         }else if(layEvent === "del") {
             layer.confirm('确定移除当前商品？', {icon: 3, title: "商品选择"}, function (index) {
                 datas.forEach((item,i) => {
-                    if(item.id === obj.data.id){
+                    if(item.goodsId === obj.data.goodsId){
                         //console.log(item);
                         datas.splice(i,1);
                     }

@@ -57,6 +57,15 @@ public class MainController {
     }
 
     /**
+     * 设置项目默认主页
+     * @return 重定向到main主页
+     */
+    @RequestMapping("/")
+    public String defaultPage() {
+        return "redirect:/main";
+    }
+
+    /**
      * 根据当前用户的id，查找并获得user对象，放在Session域中
      * @param principal
      * @param session

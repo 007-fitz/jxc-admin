@@ -136,5 +136,6 @@
 
 
 <script type="text/javascript" src="${ctx.contextPath}/js/common/damage.overflow.search.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 </body>
 </html>

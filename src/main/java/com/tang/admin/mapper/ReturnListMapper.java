@@ -15,7 +15,7 @@ import com.tang.admin.query.ReturnListQuery;
  */
 public interface ReturnListMapper extends BaseMapper<ReturnList> {
 
-    String getNextReturnNumber();
+    String getNextReturnNumber(String str);
 
     IPage<ReturnList> listReturnList(IPage<ReturnList> page, ReturnListQuery rlQuery);
 

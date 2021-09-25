@@ -56,7 +56,7 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
             StringBuffer  stringBuffer = new StringBuffer();
             stringBuffer.append("JH");
             stringBuffer.append(DateUtil.getCurrentDateStr());
-            String purchaseNumber = this.baseMapper.getNextPurchaseNumber();
+            String purchaseNumber = this.baseMapper.getNextPurchaseNumber(stringBuffer.toString());
             if(null!=purchaseNumber){
                 stringBuffer.append(StringUtil.formatCode(purchaseNumber));
             }else {
@@ -80,7 +80,8 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
     public void savePurchaseList(String username, PurchaseList purchaseList, List<PurchaseListGoods> plgList) {
         int count = this.count(new QueryWrapper<PurchaseList>().eq("purchase_number", purchaseList.getPurchaseNumber()));
         AssertUtil.isTrue(count != 0, "订单编号已存在");
-        AssertUtil.isTrue(null == purchaseList.getSupplierId(), "请指定供应商");
+        AssertUtil.isTrue(null == purchaseList.getSupplierId() || purchaseList.getSupplierId() == 0, "请指定供应商");
+        AssertUtil.isTrue(null == purchaseList.getPurchaseDate(), "请指定日期");
         AssertUtil.isTrue(null == plgList, "请选择商品");
 
         purchaseList.setUserId(userService.findByUsername(username).getId());

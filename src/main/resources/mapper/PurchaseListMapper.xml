@@ -23,7 +23,7 @@
     <select id="getNextPurchaseNumber" resultType="java.lang.String">
         select max(purchase_number) as purchaseNumber
         from t_purchase_list
-        where to_days(purchase_date) = to_days(now())
+        where purchase_number like concat(#{str}, '%')
     </select>
 
     <select id="listPurchaseList" resultType="com.tang.admin.pojo.PurchaseList">

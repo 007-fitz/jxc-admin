@@ -73,7 +73,7 @@ layui.use(['laydate','table','layer'],function(){
     table.on("tool(customerReturns)", function(obj){
         var layEvent = obj.event;
         if(layEvent === "edit") {
-            openUpdateGoodsInfoDialog(obj.data.id);
+            openUpdateGoodsInfoDialog(obj.data.goodsId);
         }else if(layEvent === "del") {
             layer.confirm('确定移除当前商品？', {icon: 3, title: "商品选择"}, function (index) {
                 datas.forEach((item,i) => {
@@ -88,10 +88,10 @@ layui.use(['laydate','table','layer'],function(){
     });
 
 
-    function openUpdateGoodsInfoDialog(id){
+    function openUpdateGoodsInfoDialog(goodsId){
         var goods;
         for (let i = 0; i < datas.length; i++) {
-            if(datas[i].id==id){
+            if(datas[i].goodsId==goodsId){
                 goods= datas[i];
                 break;
             }
@@ -137,6 +137,9 @@ layui.use(['laydate','table','layer'],function(){
 
 var datas=[];
  function getGoodsSelectInfo(gid,gname,code,price,num,model,unit,typeId,flag){
+     if (num == "") {
+         num = "0";
+     }
      if(flag){
          // 添加操作
          datas.push({

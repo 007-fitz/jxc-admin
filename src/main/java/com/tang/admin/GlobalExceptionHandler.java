@@ -29,9 +29,9 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public RespBean exceptionHandler(Exception e){
-        return RespBean.error(e.getMessage());
-    }
+//    @ExceptionHandler(Exception.class)
+//    @ResponseBody
+//    public RespBean exceptionHandler(Exception e){
+//        return RespBean.error(e.getMessage());
+//    }
 }

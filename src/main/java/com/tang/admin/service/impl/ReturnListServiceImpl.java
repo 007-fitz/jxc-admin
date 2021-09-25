@@ -56,7 +56,7 @@ public class ReturnListServiceImpl extends ServiceImpl<ReturnListMapper, ReturnL
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("TH");
             stringBuffer.append(DateUtil.getCurrentDateStr());
-            String returnNumber = this.baseMapper.getNextReturnNumber();
+            String returnNumber = this.baseMapper.getNextReturnNumber(stringBuffer.toString());
             if (null != returnNumber) {
                 stringBuffer.append(StringUtil.formatCode(returnNumber));
             } else {

@@ -23,7 +23,7 @@
     <select id="getNextReturnNumber" resultType="java.lang.String">
         select max(return_number) as returnNumber
         from t_return_list
-        where to_days(return_date) = to_days(now())
+        where return_number like concat(#{str}, '%')
     </select>
 
     <select id="listReturnList" resultType="com.tang.admin.pojo.ReturnList">

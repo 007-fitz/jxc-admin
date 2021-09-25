@@ -69,6 +69,7 @@ public class Goods implements Serializable {
     @TableField(exist = false)
     private String typeName;
 
+    // 0 初始化状态  1 期初库存入库  2 有进货或者销售单据
     @ApiModelProperty(value = "商品状态")
     private Integer state;
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tang.admin.mapper.SaleListMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tang.admin.pojo.SaleList">
+        <id column="id" property="id"/>
+        <result column="amount_paid" property="amountPaid"/>
+        <result column="amount_payable" property="amountPayable"/>
+        <result column="remarks" property="remarks"/>
+        <result column="sale_date" property="saleDate"/>
+        <result column="sale_number" property="saleNumber"/>
+        <result column="state" property="state"/>
+        <result column="user_id" property="userId"/>
+        <result column="customer_id" property="customerId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, amount_paid, amount_payable, remarks, sale_date, sale_number, state, user_id, customer_id
+    </sql>
+
+    <select id="getNextSaleNumber" resultType="java.lang.String">
+        select max(sale_number) as saleNumber
+        from t_sale_list
+        where sale_number like concat(#{str}, '%')
+    </select>
+
+    <select id="listSaleList" resultType="com.tang.admin.pojo.SaleList">
+        SELECT sl.*, u.user_name AS userName, c.NAME AS customerName
+        FROM t_sale_list sl
+        LEFT JOIN t_user u ON sl.user_id = u.id
+        LEFT JOIN t_customer c ON sl.customer_id = c.id
+        <where>
+            <if test="null !=saleListQuery.saleNumber and saleListQuery.saleNumber !='' ">
+                and sl.sale_number like concat('%', #{saleListQuery.saleNumber}, '%')
+            </if>
+            <if test="null !=saleListQuery.customerId">
+                and sl.customer_id=#{saleListQuery.customerId}
+            </if>
+            <if test="null !=saleListQuery.state">
+                and sl.state = #{saleListQuery.state}
+            </if>
+            <if test="null != saleListQuery.startDate and saleListQuery.startDate !='' ">
+                and sale_date &gt;= #{saleListQuery.startDate}
+            </if>
+            <if test="null !=saleListQuery.endDate and saleListQuery.endDate !='' ">
+                and sale_date &lt;= #{saleListQuery.endDate}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

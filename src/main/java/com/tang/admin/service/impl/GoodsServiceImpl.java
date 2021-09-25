@@ -204,4 +204,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         return PageResultUtil.getResult(page.getTotal(),page.getRecords());
     }
 
+//    @Resource
+//    private ISaleListGoodsService saleListGoodsService;
+//
+//    @Resource
+//    private ICustomerReturnListGoodsService customerReturnListGoodsService;
+
 }

@@ -15,7 +15,7 @@ import com.tang.admin.query.PurchaseListQuery;
  */
 public interface PurchaseListMapper extends BaseMapper<PurchaseList> {
 
-    String getNextPurchaseNumber();
+    String getNextPurchaseNumber(String str);
 
     IPage<PurchaseList> listPurchaseList(IPage<PurchaseList> page, PurchaseListQuery plQuery);
 

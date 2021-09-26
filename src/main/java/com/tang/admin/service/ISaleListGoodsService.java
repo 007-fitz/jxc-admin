@@ -18,5 +18,6 @@ public interface ISaleListGoodsService extends IService<SaleListGoods> {
 
     Map<String, Object> listSaleListGoods(SaleListGoodsQuery saleListGoodsQuery);
 
+    Integer getSaleTotalByGoodId(Integer id);
 
 }

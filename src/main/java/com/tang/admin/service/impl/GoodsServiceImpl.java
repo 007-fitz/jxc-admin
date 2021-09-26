@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tang.admin.pojo.Goods;
 import com.tang.admin.mapper.GoodsMapper;
 import com.tang.admin.query.GoodsQuery;
+import com.tang.admin.service.ICustomerReturnListGoodsService;
 import com.tang.admin.service.IGoodsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tang.admin.service.IGoodsTypeService;
+import com.tang.admin.service.ISaleListGoodsService;
 import com.tang.admin.utils.AssertUtil;
 import com.tang.admin.utils.PageResultUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -184,7 +186,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     /**
-     * 商品库存展示
+     * 商品库存展示，同时查询商品的销售量
      * @param goodsQuery
      * @return
      */
@@ -197,17 +199,18 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         }
         page =  this.baseMapper.queryGoodsByParams(page,goodsQuery);
         List<Goods> goodsList = page.getRecords();
-//        goodsList.forEach(g->{
-//            g.setSaleTotal( saleListGoodsService.getSaleTotalByGoodIs(g.getId()) -
-//                    customerReturnListGoodsService.getReturnTotalByGoodId(g.getId()));
-//        });
+        // 查询并填充商品销售总量字段
+        goodsList.forEach(g->{
+            g.setSaleTotal( saleListGoodsService.getSaleTotalByGoodId(g.getId()) -
+                    customerReturnListGoodsService.getReturnTotalByGoodId(g.getId()));
+        });
         return PageResultUtil.getResult(page.getTotal(),page.getRecords());
     }
 
-//    @Resource
-//    private ISaleListGoodsService saleListGoodsService;
-//
-//    @Resource
-//    private ICustomerReturnListGoodsService customerReturnListGoodsService;
+    @Resource
+    private ISaleListGoodsService saleListGoodsService;
+
+    @Resource
+    private ICustomerReturnListGoodsService customerReturnListGoodsService;
 
 }

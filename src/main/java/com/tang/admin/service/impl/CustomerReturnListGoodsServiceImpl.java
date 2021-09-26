@@ -39,4 +39,15 @@ public class CustomerReturnListGoodsServiceImpl extends ServiceImpl<CustomerRetu
         page = this.baseMapper.selectPage(page, queryWrapper);
         return PageResultUtil.getResult(page.getTotal(), page.getRecords());
     }
+
+    /**
+     * 根据商品id，查询此商品从客户退货总量
+     * @param id
+     * @return
+     */
+    @Override
+    public Integer getReturnTotalByGoodId(Integer id) {
+        CustomerReturnListGoods customerReturnListGoods = this.getOne(new QueryWrapper<CustomerReturnListGoods>().select("sum(num) as num").eq("goods_id",id));
+        return null==customerReturnListGoods?0:customerReturnListGoods.getNum();
+    }
 }

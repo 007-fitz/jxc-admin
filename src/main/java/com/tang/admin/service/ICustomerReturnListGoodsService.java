@@ -18,4 +18,6 @@ public interface ICustomerReturnListGoodsService extends IService<CustomerReturn
 
     Map<String, Object> listCustomerReturnListGoods(CustomerReturnListGoodsQuery customerReturnListGoodsQuery);
 
+    Integer getReturnTotalByGoodId(Integer id);
+
 }

@@ -39,4 +39,17 @@ public class SaleListGoodsServiceImpl extends ServiceImpl<SaleListGoodsMapper, S
         page = this.baseMapper.selectPage(page, queryWrapper);
         return PageResultUtil.getResult(page.getTotal(), page.getRecords());
     }
+
+    /**
+     * 根据商品id，查询此商品销售总量
+     * @param id
+     * @return
+     */
+    @Override
+    public Integer getSaleTotalByGoodId(Integer id) {
+        SaleListGoods saleListGoods = this.getOne(new QueryWrapper<SaleListGoods>().select("sum(num) as num").eq("goods_id",id));
+        System.out.println(saleListGoods);
+        return null==saleListGoods?0:saleListGoods.getNum();
+    }
+
 }

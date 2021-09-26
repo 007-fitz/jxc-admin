@@ -180,13 +180,13 @@
                                     <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd"
                                        data-tab-mpi="m-p-i-13" data-tab="report/countDaySale" target="_self"><i
                                                 class="fa fa-tachometer"></i><span
-                                                class="layui-left-nav"> 按日统计</span></a>
+                                                class="layui-left-nav"> 销售按日统计</span></a>
                                 </dd>
                                 <dd class="">
                                     <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd"
                                        data-tab-mpi="m-p-i-13" data-tab="report/countMonthSale" target="_self"><i
                                                 class="fa fa-tachometer"></i><span
-                                                class="layui-left-nav"> 按月统计</span></a>
+                                                class="layui-left-nav"> 销售按月统计</span></a>
                                 </dd>
                             </dl>
                         </li>
@@ -250,7 +250,7 @@
                                             <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd"
                                                data-tab-mpi="m-p-i-13" data-tab="menu/index" target="_self"><i
                                                         class="fa fa-tachometer"></i><span
-                                                        class="layui-left-nav"> 菜单管理</span></a>
+                                                        class="layui-left-nav"> 菜单(权限)管理</span></a>
                                         </dd>
                                     </@security.authorize>
                                 </dl>

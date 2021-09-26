@@ -19,5 +19,6 @@ public class PurchaseListQuery extends BaseQuery {
     private Integer typeId;
     private List<Integer> typeIds;
 
+    // 手动分页查询所需参数
     public Integer index;
 }

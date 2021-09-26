@@ -97,5 +97,24 @@ public class PurchaseListController {
         return RespBean.success("进货订单删除成功");
     }
 
+    /**
+     * 结算进货订单
+     * @param id
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public RespBean update(Integer id) {
+        purchaseListService.updatePurchaseList(id);
+        return RespBean.success("结算成功");
+    }
+
+    @RequestMapping("countPurchase")
+    @ResponseBody
+    public Map<String,Object > countPurchase(PurchaseListQuery purchaseListQuery){
+        return purchaseListService.countPurchase(purchaseListQuery);
+    }
+
+
 
 }

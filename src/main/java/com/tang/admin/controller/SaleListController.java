@@ -94,4 +94,46 @@ public class SaleListController {
         return RespBean.success("销售订单删除成功");
     }
 
+    /**
+     * 结算销售订单
+     * @param id
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public RespBean update(Integer id) {
+        saleListService.updateSaleListState(id);
+        return RespBean.success("销售订单结算成功");
+    }
+
+    @RequestMapping("/countSale")
+    @ResponseBody
+    public Map<String,Object> countSale(SaleListQuery saleListQuery){
+        return saleListService.countSale(saleListQuery);
+    }
+
+    /**
+     * 以日为单位 分组统计销售情况
+     * @param begin
+     * @param end
+     * @return
+     */
+    @RequestMapping("/countSaleByDay")
+    @ResponseBody
+    public  Map<String,Object> countDaySale(String begin,String end){
+        return saleListService.countDaySale(begin,end);
+    }
+
+    /**
+     * 以月为单位 分组统计销售情况
+     * @param begin
+     * @param end
+     * @return
+     */
+    @RequestMapping("countSaleByMonth")
+    @ResponseBody
+    public Map<String,Object> countSaleByMonth(String begin,String end){
+        return saleListService.countMonthSale(begin,end);
+    }
+
 }

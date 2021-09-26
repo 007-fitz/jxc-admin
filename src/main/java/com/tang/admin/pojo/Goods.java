@@ -79,5 +79,8 @@ public class Goods implements Serializable {
     @ApiModelProperty(value = "是否删除")
     private Integer isDel;
 
+    @ApiModelProperty(value = "销售总数")
+    @TableField(exist = false)
+    private Integer saleTotal;
 
 }

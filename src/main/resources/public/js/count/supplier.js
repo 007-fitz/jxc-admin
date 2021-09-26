@@ -33,6 +33,7 @@ layui.use(['laydate','table','layer'],function() {
         height: 400,
         page : true,
         limits : [10,15,20,25],
+         url:ctx+"/purchase/list",
         id: "supplierListTable",
         cols: [[
             {field: 'supplierName', title: '供应商', minWidth: 100, align: 'center'},
@@ -80,23 +81,16 @@ layui.use(['laydate','table','layer'],function() {
 
 
     function search(){
-        var startDate =  $("input[name='startDate']").val();
-        var endDate = $("input[name='endDate']").val();
-        var supplierId = $('select[name="supplierId"] option:selected').val();
-        var state = $('select[name="state"] option:selected').val();
-        $.ajax({
-            type:"post",
-            url:ctx+"/purchase/list",
-            data:{
-                startDate: startDate,
-                endDate: endDate,
-                state:state,
-                supplierId:supplierId
+        table.reload("supplierListTable",{
+            page: {
+                curr: 1 //重新从第 1 页开始
             },
-            success:function (datas){
-                table.reload("supplierListTable",{
-                    data:datas.data
-                })
+            where: {
+                // 单据号
+                startDate:$("input[name='startDate']").val(),
+                endDate : $("input[name='endDate']").val(),
+                supplierId : $('select[name="supplierId"] option:selected').val(),
+                state : $('select[name="state"] option:selected').val(),
             }
         })
 
@@ -124,6 +118,15 @@ layui.use(['laydate','table','layer'],function() {
                     })
                 }
             })
+
+            // table.reload("listGoodsTable",{
+            //     page: {
+            //         curr: 1 //重新从第 1 页开始
+            //     },
+            //     where: {
+            //         purchaseListId:obj.data.id
+            //     }
+            // })
         }else if(layEvent === "del"){
             layer.confirm('确定支付？', {icon: 3, title: "供应商统计"}, function (index) {
                 $.post(ctx+"/purchase/update",{id:obj.data.id},function (data) {

@@ -7,12 +7,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tang.admin.pojo.*;
 import com.tang.admin.mapper.PurchaseListMapper;
+import com.tang.admin.pojo.model.CountResultModel;
 import com.tang.admin.query.PurchaseListQuery;
-import com.tang.admin.service.IGoodsService;
-import com.tang.admin.service.IPurchaseListGoodsService;
-import com.tang.admin.service.IPurchaseListService;
+import com.tang.admin.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.tang.admin.service.IUserService;
 import com.tang.admin.utils.AssertUtil;
 import com.tang.admin.utils.DateUtil;
 import com.tang.admin.utils.PageResultUtil;
@@ -45,21 +43,25 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
     @Resource
     private IUserService userService;
 
+    @Resource
+    private IGoodsTypeService goodsTypeService;
+
     /**
      * 生成进货订单编号
+     *
      * @return
      */
     @Override
     public String getNextPurchaseNumber() {
         //JH20218070001X
         try {
-            StringBuffer  stringBuffer = new StringBuffer();
+            StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("JH");
             stringBuffer.append(DateUtil.getCurrentDateStr());
             String purchaseNumber = this.baseMapper.getNextPurchaseNumber(stringBuffer.toString());
-            if(null!=purchaseNumber){
+            if (null != purchaseNumber) {
                 stringBuffer.append(StringUtil.formatCode(purchaseNumber));
-            }else {
+            } else {
                 stringBuffer.append("0001");
             }
             return stringBuffer.toString();
@@ -71,9 +73,10 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
 
     /**
      * 保存进货订单信息
-     * @param username 当前用户用户名
+     *
+     * @param username     当前用户用户名
      * @param purchaseList 订单信息
-     * @param plgList 订单所包含的商品信息
+     * @param plgList      订单所包含的商品信息
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -87,7 +90,7 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
         purchaseList.setUserId(userService.findByUsername(username).getId());
         AssertUtil.isTrue(!this.save(purchaseList), "订单入库失败01");
 
-        PurchaseList temp = this.getOne(new QueryWrapper<PurchaseList>().eq("purchase_number",purchaseList.getPurchaseNumber()));
+        PurchaseList temp = this.getOne(new QueryWrapper<PurchaseList>().eq("purchase_number", purchaseList.getPurchaseNumber()));
         plgList.forEach(plg -> {
             plg.setPurchaseListId(temp.getId());
             // 入库会导致商品库存增加
@@ -102,6 +105,7 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
 
     /**
      * 条件性展示进货订单信息
+     *
      * @param purchaseListQuery
      * @return 分页查询结果
      */
@@ -114,6 +118,7 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
 
     /**
      * 删除进货订单，同时删除订单所关联的商品信息
+     *
      * @param id
      */
     @Override
@@ -123,5 +128,29 @@ public class PurchaseListServiceImpl extends ServiceImpl<PurchaseListMapper, Pur
         AssertUtil.isTrue(!this.removeById(id), "进货订单删除失败02");
     }
 
+    /**
+     * 更新单据状态为已支付
+     *
+     * @param pid
+     */
+    @Override
+    public void updatePurchaseList(Integer pid) {
+        PurchaseList purchaseList = this.getById(pid);
+        AssertUtil.isTrue(null == purchaseList, "待结算的记录不存在");
+        AssertUtil.isTrue(purchaseList.getState() == 1, "记录已支付");
+        purchaseList.setState(1);
+        AssertUtil.isTrue(!(this.updateById(purchaseList)), "记录结算失败");
+    }
 
+    @Override
+    public Map<String, Object> countPurchase(PurchaseListQuery purchaseListQuery) {
+        if(null!=purchaseListQuery.getTypeId()){
+            List<Integer> typeIds = goodsTypeService.queryAllSubTypeIdsByTypeId(purchaseListQuery.getTypeId());
+            purchaseListQuery.setTypeIds(typeIds);
+        }
+        purchaseListQuery.setIndex((purchaseListQuery.getPage()-1)*purchaseListQuery.getLimit());
+        Long count = this.baseMapper.countPurchaseTotal(purchaseListQuery);
+        List<CountResultModel> list = this.baseMapper.countPurchaseList(purchaseListQuery);
+        return PageResultUtil.getResult(count,list);
+    }
 }

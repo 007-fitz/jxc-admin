@@ -22,7 +22,7 @@ ERP进销存管理系统
 ### 统计
     - 对各种单据的简单统计
 ---
-涉及技术
+### 涉及技术
     - 后端：SpringBoot、Spring Security、Mybatis-Plus
     - 前端：Layui、Freemarker
     - 其他：通过Kaptcha生成验证码图片、通过zTree做前端的数据层级结构展示。

@@ -23,7 +23,7 @@
         <label class="layui-form-label">菜单级别</label>
         <div class="layui-input-block">
             <#if grade??>
-                <select name="grade" >
+                <select name="grade" disabled>
                     <option value="0" <#if grade==0>selected="selected"</#if> >一级菜单</option>
                     <option value="1" <#if grade==1>selected="selected"</#if>>二级菜单</option>
                     <option value="2" <#if grade==2>selected="selected"</#if>>三级菜单</option>

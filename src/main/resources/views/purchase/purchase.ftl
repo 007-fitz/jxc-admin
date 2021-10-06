@@ -26,7 +26,7 @@
 					<label class="layui-form-label">应付金额</label>
 					<div class="layui-input-block">
 						<input type="text" class="layui-input amountPayable"
-							   name="amountPayable" id="amountPayable" >
+							   name="amountPayable" id="amountPayable" readonly>
 					</div>
 				</div>
 				<div class="layui-col-xs3">

@@ -59,7 +59,7 @@
 
 
 						<script id="leftListBar" type="text/html">
-							<a class="layui-btn layui-btn-xs" id="edit" lay-event="search">货单</a>
+							<a class="layui-btn layui-btn-xs" id="edit" lay-event="search">详细信息</a>
 							<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 						</script>
 					</form>

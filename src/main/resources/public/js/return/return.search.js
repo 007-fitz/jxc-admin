@@ -36,7 +36,7 @@ layui.use(['laydate','table','layer'],function() {
         limits : [10,15,20,25],
         id: "returnListTable",
         cols: [[
-            {field: "id", title: '编号', fixed: "true", width: 80},
+            // {field: "id", title: '编号', fixed: "true", width: 60},
             {field: 'returnNumber', title: '退货单号', minWidth: 50, align: "center"},
             {field: 'returnDate', title: '进货日期', minWidth: 50, align: "center"},
             {field: 'supplierName', title: '供应商', minWidth: 100, align: 'center'},
@@ -113,17 +113,17 @@ layui.use(['laydate','table','layer'],function() {
     var tableIns02 = table.render({
         elem: '#returnListGoods',
         url: ctx + '/returnListGoods/list',
-        height: "full-125",
+        // height: "full-125",
         page : true,
         limits : [10,15,20,25],
         id: "returnListGoodsTable",
         cols: [[
-            {field: 'code', title: '商品编码', minWidth: 50, align: "center"},
+            // {field: 'code', title: '商品编码', minWidth: 50, align: "center"},
             {field: 'name', title: '商品名称', minWidth: 50, align: "center"},
             {field: 'model', title: '商品型号', minWidth: 100, align: 'center'},
             {field: 'price', title: '单价', minWidth: 100, align: 'center'},
             {field: 'num', title: '数量', minWidth: 100, align: 'center'},
-            {field: 'unit', title: '单位', minWidth: 100, align: 'center'},
+            // {field: 'unit', title: '单位', minWidth: 100, align: 'center'},
             {field: 'total', title: '总金额', minWidth: 100, align: 'center'}
         ]]
     });

@@ -65,7 +65,7 @@
 										<div class="layui-col-xs4">
 											<label class="layui-form-label"></label>
 											<a class="layui-btn search_btn" data-type="reload"><i
-														class="layui-icon">&#xe615;</i> 搜索</a>
+														class="layui-icon">&#xe615;</i> 筛选</a>
 										</div>
 									</div>
 								</fieldset>
@@ -75,7 +75,7 @@
 
 
 						<script id="returnListBar" type="text/html">
-							<a class="layui-btn layui-btn-xs" id="edit" lay-event="search">货单</a>
+							<a class="layui-btn layui-btn-xs" id="edit" lay-event="search">详细信息</a>
 							<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 						</script>
 					</form>
@@ -91,7 +91,7 @@
 						<blockquote class="layui-elem-quote quoteBox">
 							<form class="layui-form">
 								<fieldset class="layui-elem-field site-demo-button" >
-									<legend>退货单商品信息</legend>
+									<legend>退货单详细信息</legend>
 									<br/>
 									<div class="layui-row">
 										<div class="layui-col-xs4">

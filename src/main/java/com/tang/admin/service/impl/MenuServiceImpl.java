@@ -68,7 +68,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         AssertUtil.isTrue(StringUtils.isBlank(menu.getName()), "菜单名不能为空");
         AssertUtil.isTrue(null != this.findMenuByNameAndGrade(menu.getName(), menu.getGrade()), "该层级下 菜单名称已存在!");
         AssertUtil.isTrue(null != this.findMenuByAclValue(menu.getAclValue()), "权限码已存在!");
-        if (grade == 1) {
+        if (grade == 1 && StringUtils.isNotBlank(menu.getUrl())) {
             // 二级菜单
             AssertUtil.isTrue(null != this.findMenuByUrlAndGrade(menu.getUrl(), menu.getGrade()), "该层级下url 不可重复!");
         }
@@ -109,7 +109,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         temp = this.findMenuByAclValue(menu.getAclValue());
         AssertUtil.isTrue(null != temp && !(temp.getId().equals(menu.getId())), "权限码已存在!");
         AssertUtil.isTrue(null == menu.getPId() || null == this.findMenuById(menu.getPId()), "请指定上级菜单!");
-        if (grade == 1) {
+        if (grade == 1 && StringUtils.isNotBlank(menu.getUrl()) ) {
             temp = this.findMenuByUrlAndGrade(menu.getUrl(), menu.getGrade());
             AssertUtil.isTrue(null != temp && !(temp.getId().equals(menu.getId())), "该层级下url 不可重复!");
         }
